@@ -151,60 +151,20 @@ export function getLinkedVehicleRouteSlugs(): string[] {
 }
 
 /**
- * Returns at most `limit` route slugs for SSG, prioritised by:
- * 1. Hub → hub (e.g. kolkata ↔ ranchi)
- * 2. Hub → any destination, shortest routes first
- * 3. Reverse of any included route (if it exists)
- *
- * Hard cap prevents Vercel ENOSPC on the build container.
+ * Returns ALL internally-linked route slugs for fully-static SSG.
+ * Uses getLinkedRouteSlugs() to cover every route that appears in
+ * internal cross-links (city pages, state pages, footer, etc.).
+ * This eliminates ALL ISR writes — every route is pre-built at deploy time.
  */
-export function getStaticRouteSlugs(limit: number = 800): string[] {
-  const hubSlugs = new Set(['kolkata', 'ranchi', 'bhubaneswar', 'jamshedpur', 'patna']);
-
-  // Tier 1: hub → hub
-  const tier1 = routes.filter(r => hubSlugs.has(r.from) && hubSlugs.has(r.to));
-  // Tier 2: hub → anywhere, sorted by distance ascending
-  const tier2 = routes
-    .filter(r => hubSlugs.has(r.from) && !hubSlugs.has(r.to))
-    .sort((a, b) => a.distance - b.distance);
-  // Tier 3: anywhere → hub, sorted by distance ascending
-  const tier3 = routes
-    .filter(r => !hubSlugs.has(r.from) && hubSlugs.has(r.to))
-    .sort((a, b) => a.distance - b.distance);
-
-  const seen = new Set<string>();
-  const result: string[] = [];
-
-  for (const r of [...tier1, ...tier2, ...tier3]) {
-    if (result.length >= limit) break;
-    if (!seen.has(r.slug)) {
-      seen.add(r.slug);
-      result.push(r.slug);
-    }
-  }
-
-  // Fill remaining slots with reverse routes
-  const withReverse = [...result];
-  for (const slug of result) {
-    if (withReverse.length >= limit) break;
-    const parts = slug.split('-to-');
-    if (parts.length === 2) {
-      const rev = `${parts[1]}-to-${parts[0]}`;
-      if (routeMap.has(rev) && !seen.has(rev)) {
-        seen.add(rev);
-        withReverse.push(rev);
-      }
-    }
-  }
-
-  return withReverse.slice(0, limit);
+export function getStaticRouteSlugs(): string[] {
+  return getLinkedRouteSlugs();
 }
 
 /**
- * Returns at most `limit` route slugs for vehicle-specific SSG pages.
- * Stricter than getStaticRouteSlugs — only hub↔hub and hub→short routes.
+ * Returns hub route slugs for vehicle-specific SSG pages.
+ * @deprecated Vehicle pages now redirect to route page #booking-form.
  */
-export function getStaticVehicleRouteSlugs(limit: number = 150): string[] {
-  return getStaticRouteSlugs(limit).filter(isHubRoute);
+export function getStaticVehicleRouteSlugs(): string[] {
+  return getLinkedVehicleRouteSlugs();
 }
 

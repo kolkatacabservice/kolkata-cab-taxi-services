@@ -17,10 +17,11 @@ import { generateRouteMetadata, generateFaqSchema, generateBreadcrumbSchema, gen
 import { generateRoutePageContent } from '@/lib/routeContent';
 import { formatBoldText, parseParagraphsWithBold } from '@/lib/textHelper';
 
-// true = ALL route slugs work (generates on first request via ISR)
-export const dynamicParams = true;
-// Cache each page for 30 days after first generation
-export const revalidate = 2592000; // 30 days — reduces ISR writes by 30x vs daily
+// false = ALL route slugs are pre-built at deploy time. No ISR, zero writes.
+// Non-prebuilt routes return 404 (only ~200 non-linked routes in dataset).
+export const dynamicParams = false;
+// Fully static — no ISR cache, no revalidation. Pages update only on next deploy.
+export const revalidate = false;
 
 // Pre-build the top hub routes at build time.
 // All other routes generate on first visitor request and are cached for 30 days.
@@ -600,16 +601,16 @@ export default async function RoutePage({ params }: { params: Promise<{ route: s
             <Link href={`/${route.toState}/${route.to}/round-trip`} className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs text-gray-600 hover:border-primary/40 hover:text-primary hover:bg-primary/5 transition-colors">
               round trip from {route.toName}
             </Link>
-            {/* Vehicle-specific route links — internal page links, strong ranking signal */}
-            <Link href={`/routes/${route.slug}/sedan`} className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs text-gray-600 hover:border-primary/40 hover:text-primary hover:bg-primary/5 transition-colors">
+            {/* Vehicle-specific booking links — scroll to booking form */}
+            <a href="#booking-form" className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs text-gray-600 hover:border-primary/40 hover:text-primary hover:bg-primary/5 transition-colors">
               {route.fromName} to {route.toName} sedan cab
-            </Link>
-            <Link href={`/routes/${route.slug}/suv`} className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs text-gray-600 hover:border-primary/40 hover:text-primary hover:bg-primary/5 transition-colors">
+            </a>
+            <a href="#booking-form" className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs text-gray-600 hover:border-primary/40 hover:text-primary hover:bg-primary/5 transition-colors">
               {route.fromName} to {route.toName} SUV cab
-            </Link>
-            <Link href={`/routes/${route.slug}/tempo`} className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs text-gray-600 hover:border-primary/40 hover:text-primary hover:bg-primary/5 transition-colors">
+            </a>
+            <a href="#booking-form" className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs text-gray-600 hover:border-primary/40 hover:text-primary hover:bg-primary/5 transition-colors">
               {route.fromName} to {route.toName} tempo traveller
-            </Link>
+            </a>
             <Link href="/services/outstation" className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs text-gray-600 hover:border-primary/40 hover:text-primary hover:bg-primary/5 transition-colors">
               outstation cab service
             </Link>

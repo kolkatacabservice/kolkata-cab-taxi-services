@@ -6,8 +6,8 @@ import type { MetadataRoute } from 'next';
 // With force-static, all 7 sitemaps are pre-built at deploy time — zero ISR.
 export const dynamic = 'force-static';
 export const revalidate = false;
-import { getAllCities, getAllStateSlugs, getTourSlugs, VEHICLE_SLUGS } from '@/lib/data';
-import { getAllRoutes, getStaticRouteSlugs, getStaticVehicleRouteSlugs } from '@/lib/routeData';
+import { getAllCities, getAllStateSlugs, getTourSlugs } from '@/lib/data';
+import { getAllRoutes, getStaticRouteSlugs } from '@/lib/routeData';
 import blogsData from '@/data/blogs.json';
 import areasData from '@/data/kolkata-areas.json';
 
@@ -77,9 +77,9 @@ const CITY_SERVICE_TYPES = [
   'local', 'outstation', 'one-way', 'two-way', 'round-trip', 'airport-transfer', 'wedding-car',
 ] as const;
 
-// Generate 7 sub-sitemaps (split vehicle-specific route pages to sitemap/5 and sitemap/6)
+// Generate 5 sub-sitemaps (vehicle-specific route pages removed — redirect to booking form)
 export async function generateSitemaps() {
-  return [{ id: '0' }, { id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }, { id: '6' }];
+  return [{ id: '0' }, { id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }];
 }
 
 export default async function sitemap({ id }: { id: Promise<string> }): Promise<MetadataRoute.Sitemap> {
@@ -212,54 +212,6 @@ export default async function sitemap({ id }: { id: Promise<string> }): Promise<
         }
       }
       return subPages;
-    }
-
-    // Vehicle-specific route pages part 1 — ONLY pre-built routes (must match generateStaticParams).
-    case '5': {
-      const staticSlugs = new Set(getStaticVehicleRouteSlugs());
-      const vehicleRoutePages: MetadataRoute.Sitemap = [];
-      const staticRoutes = routes.filter(r => staticSlugs.has(r.slug));
-      const halfIndex = Math.ceil(staticRoutes.length / 2);
-      const routesPart1 = staticRoutes.slice(0, halfIndex);
-      for (const route of routesPart1) {
-        const isHighPriority = (
-          (HUB_SLUGS.includes(route.from) && POPULAR_DESTINATIONS.includes(route.to)) ||
-          (HUB_SLUGS.includes(route.to) && POPULAR_DESTINATIONS.includes(route.from))
-        );
-        for (const vehicleSlug of VEHICLE_SLUGS) {
-          vehicleRoutePages.push({
-            url: `${DOMAIN}/routes/${route.slug}/${vehicleSlug}`,
-            lastModified: LAST_MODIFIED,
-            changeFrequency: 'monthly' as const,
-            priority: isHighPriority ? 0.5 : 0.3,
-          });
-        }
-      }
-      return vehicleRoutePages;
-    }
-
-    // Vehicle-specific route pages part 2 — ONLY pre-built routes (must match generateStaticParams).
-    case '6': {
-      const staticSlugs = new Set(getStaticVehicleRouteSlugs());
-      const vehicleRoutePages: MetadataRoute.Sitemap = [];
-      const staticRoutes = routes.filter(r => staticSlugs.has(r.slug));
-      const halfIndex = Math.ceil(staticRoutes.length / 2);
-      const routesPart2 = staticRoutes.slice(halfIndex);
-      for (const route of routesPart2) {
-        const isHighPriority = (
-          (HUB_SLUGS.includes(route.from) && POPULAR_DESTINATIONS.includes(route.to)) ||
-          (HUB_SLUGS.includes(route.to) && POPULAR_DESTINATIONS.includes(route.from))
-        );
-        for (const vehicleSlug of VEHICLE_SLUGS) {
-          vehicleRoutePages.push({
-            url: `${DOMAIN}/routes/${route.slug}/${vehicleSlug}`,
-            lastModified: LAST_MODIFIED,
-            changeFrequency: 'monthly' as const,
-            priority: isHighPriority ? 0.5 : 0.3,
-          });
-        }
-      }
-      return vehicleRoutePages;
     }
 
     default:
