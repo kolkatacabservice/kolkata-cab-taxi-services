@@ -134,24 +134,6 @@
     0%, 100% { transform: scale(1); opacity: 1; }
     50% { transform: scale(1.05); opacity: 0.9; }
   }
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-  @keyframes bounceIn {
-    0% { opacity: 0; transform: scale(0.3); }
-    50% { opacity: 1; transform: scale(1.05); }
-    70% { transform: scale(0.9); }
-    100% { transform: scale(1); }
-  }
-  @keyframes ripple {
-    0% { transform: scale(1); opacity: 0.6; }
-    100% { transform: scale(1.4); opacity: 0; }
-  }
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
 
   .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
   .animate-slideDown { animation: slideDown 0.3s ease-out; }
@@ -159,17 +141,6 @@
   .animate-slideInRight { animation: slideInRight 0.4s ease-out; }
   .animate-float { animation: float 3s ease-in-out infinite; }
   .animate-pulse-slow { animation: pulseSlow 2s ease-in-out infinite; }
-  .animate-bounceIn { animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
-  .animate-ripple { animation: ripple 1.5s ease-out infinite; }
-  .animate-shimmer {
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
-  }
-  .animate-gradient {
-    background-size: 200% 200%;
-    animation: gradientShift 3s ease infinite;
-  }
 
   /* Card hover effect */
   .card-hover {
@@ -178,28 +149,6 @@
   .card-hover:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Premium card hover — with glow */
-  .card-premium {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-  }
-  .card-premium::after {
-    content: '';
-    position: absolute;
-    top: 0; left: -75%;
-    width: 50%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-    transition: left 0.5s;
-  }
-  .card-premium:hover::after {
-    left: 125%;
-  }
-  .card-premium:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   }
 
   /* Route card */
@@ -211,35 +160,6 @@
     transform: translateY(-2px);
     border-color: #C65100;
     box-shadow: 0 8px 30px rgba(198, 81, 0, 0.1);
-  }
-
-  /* Button hover with lift */
-  .btn-lift {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .btn-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  }
-  .btn-lift:active {
-    transform: translateY(0);
-  }
-
-  /* Floating action button pulse */
-  .fab-pulse {
-    animation: ripple 2s ease-out infinite;
-  }
-
-  /* Section divider wave */
-  .section-divider {
-    position: relative;
-  }
-  .section-divider::before {
-    content: '';
-    position: absolute;
-    top: -1px; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, transparent, #C65100, transparent);
   }
 
   /* Google Maps Embed */

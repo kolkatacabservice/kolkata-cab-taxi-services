@@ -18,10 +18,11 @@ export const dynamicParams = true;
 // Cache each page for 30 days after first generation
 export const revalidate = 2592000; // 30 days — reduces ISR writes by 30x vs daily
 
-// Pre-build only the top 50 hub route + vehicle combos at build time.
+// Pre-build only the top hub route + vehicle combos at build time.
 // All others generate on first request via ISR (no 404s).
+// CRITICAL: This number MUST match the sitemap — only pre-built routes appear in sitemaps.
 export async function generateStaticParams() {
-  const routeSlugs = getStaticVehicleRouteSlugs(50);
+  const routeSlugs = getStaticVehicleRouteSlugs();
   const params: { route: string; vehicle: string }[] = [];
   for (const rs of routeSlugs) {
     for (const vs of VEHICLE_SLUGS) {

@@ -7,7 +7,7 @@ import type { MetadataRoute } from 'next';
 export const dynamic = 'force-static';
 export const revalidate = false;
 import { getAllCities, getAllStateSlugs, getTourSlugs, VEHICLE_SLUGS } from '@/lib/data';
-import { getAllRoutes, getLinkedRouteSlugs, getLinkedVehicleRouteSlugs } from '@/lib/routeData';
+import { getAllRoutes, getStaticRouteSlugs, getStaticVehicleRouteSlugs } from '@/lib/routeData';
 import blogsData from '@/data/blogs.json';
 import areasData from '@/data/kolkata-areas.json';
 
@@ -142,11 +142,13 @@ export default async function sitemap({ id }: { id: Promise<string> }): Promise<
       return [...statePages, ...cityPages];
     }
 
-    // Route pages — index 100% of the active routes in our database.
-    // They compile dynamically on first visitor/bot request (via Next.js dynamicParams/ISR)
-    // and are cached for 30 days. None of them return a 404 since they exist in the database.
+    // Route pages — ONLY pre-built routes (must match generateStaticParams).
+    // Listing un-prebuilt routes causes ISR writes on every search engine crawl.
     case '2': {
-      return routes.map(route => {
+      const routeMap = new Map(routes.map(r => [r.slug, r]));
+      const staticSlugs = getStaticRouteSlugs();
+      return staticSlugs.map(slug => {
+        const route = routeMap.get(slug)!;
         const isHighPriority = (
           (HUB_SLUGS.includes(route.from) && POPULAR_DESTINATIONS.includes(route.to)) ||
           (HUB_SLUGS.includes(route.to) && POPULAR_DESTINATIONS.includes(route.from))
@@ -212,13 +214,13 @@ export default async function sitemap({ id }: { id: Promise<string> }): Promise<
       return subPages;
     }
 
-    // Vehicle-specific route pages part 1 — only pre-built routes
+    // Vehicle-specific route pages part 1 — ONLY pre-built routes (must match generateStaticParams).
     case '5': {
-      const linkedSlugs = new Set(getLinkedVehicleRouteSlugs());
+      const staticSlugs = new Set(getStaticVehicleRouteSlugs());
       const vehicleRoutePages: MetadataRoute.Sitemap = [];
-      const linkedRoutes = routes.filter(r => linkedSlugs.has(r.slug));
-      const halfIndex = Math.ceil(linkedRoutes.length / 2);
-      const routesPart1 = linkedRoutes.slice(0, halfIndex);
+      const staticRoutes = routes.filter(r => staticSlugs.has(r.slug));
+      const halfIndex = Math.ceil(staticRoutes.length / 2);
+      const routesPart1 = staticRoutes.slice(0, halfIndex);
       for (const route of routesPart1) {
         const isHighPriority = (
           (HUB_SLUGS.includes(route.from) && POPULAR_DESTINATIONS.includes(route.to)) ||
@@ -236,13 +238,13 @@ export default async function sitemap({ id }: { id: Promise<string> }): Promise<
       return vehicleRoutePages;
     }
 
-    // Vehicle-specific route pages part 2 — only pre-built routes
+    // Vehicle-specific route pages part 2 — ONLY pre-built routes (must match generateStaticParams).
     case '6': {
-      const linkedSlugs = new Set(getLinkedVehicleRouteSlugs());
+      const staticSlugs = new Set(getStaticVehicleRouteSlugs());
       const vehicleRoutePages: MetadataRoute.Sitemap = [];
-      const linkedRoutes = routes.filter(r => linkedSlugs.has(r.slug));
-      const halfIndex = Math.ceil(linkedRoutes.length / 2);
-      const routesPart2 = linkedRoutes.slice(halfIndex);
+      const staticRoutes = routes.filter(r => staticSlugs.has(r.slug));
+      const halfIndex = Math.ceil(staticRoutes.length / 2);
+      const routesPart2 = staticRoutes.slice(halfIndex);
       for (const route of routesPart2) {
         const isHighPriority = (
           (HUB_SLUGS.includes(route.from) && POPULAR_DESTINATIONS.includes(route.to)) ||

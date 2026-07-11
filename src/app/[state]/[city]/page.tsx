@@ -10,7 +10,7 @@ import BookingForm from '@/components/BookingForm';
 import FAQSection from '@/components/FAQSection';
 import GoogleMapEmbed from '@/components/GoogleMapEmbed';
 import FareCalculator from '@/components/FareCalculator';
-import FleetSection from '@/components/FleetSection';
+import VehicleCards from '@/components/VehicleCards';
 import { getState, getCity, getAllCities, getVehicles, BUSINESS, getStatePriceLabels, getStateFares } from '@/lib/data';
 import { getRoutesFrom, getRoutesTo, getPopularLocalRoutes } from '@/lib/routeData';
 import { generateCityMetadata, generateFaqSchema, generateBreadcrumbSchema, generateCityServiceSchema, getCityGeoMeta, generateCityGeoCircleSchema } from '@/lib/seo';
@@ -412,8 +412,8 @@ export default async function CityPage({ params }: { params: Promise<{ state: st
         </div>
       </section>
 
-      {/* Fleet Section — Our Vehicles */}
-      <FleetSection cityName={city.name} />
+      {/* Vehicle Cards — Click to Book */}
+      <VehicleCards cityName={city.name} />
 
       {/* Landmarks */}
       {city.landmarks && city.landmarks.length > 0 && (

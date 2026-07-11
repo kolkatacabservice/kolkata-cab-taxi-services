@@ -305,7 +305,7 @@ export function getRouteHindiFAQs(input: RouteContentInput): { question: string;
 }
 
 // ─── Seasonal & Festival Travel Guide ───
-function getSeasonalContent(fromName: string, toName: string, fromState: string, toState: string): string | null {
+function getSeasonalContent(fromName: string, toName: string): string | null {
   const fLower = fromName.toLowerCase();
   const tLower = toName.toLowerCase();
 
@@ -347,7 +347,7 @@ export function generateRoutePageContent(input: RouteContentInput) {
     faqs: [...getRouteExtendedFAQs(input), ...getRouteHindiFAQs(input)],
     reverseRouteSlug: `${route.to}-to-${route.from}`,
     reverseRouteLabel: `${route.toName} to ${route.fromName}`,
-    seasonalContent: getSeasonalContent(route.fromName, route.toName, route.fromState, route.toState),
+    seasonalContent: getSeasonalContent(route.fromName, route.toName),
     keyHighlights: [
       { label: 'Distance', value: `${route.distance} km` },
       { label: 'Duration', value: `${route.duration} hours` },

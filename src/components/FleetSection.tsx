@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Phone, Users, CheckCircle } from 'lucide-react';
-import { BUSINESS, getVehicles } from '@/lib/data';
+import { getVehicles } from '@/lib/data';
 
 interface FleetSectionProps {
   fromName?: string;
@@ -84,6 +83,7 @@ export default function FleetSection({ fromName, toName, routeSlug, cityName, pr
             );
           })}
         </div>
+      </div>
     </section>
   );
 }

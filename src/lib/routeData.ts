@@ -18,7 +18,7 @@ function loadRoutesOnce(): { routes: Route[]; routeMap: Map<string, Route> } {
 }
 
 const routes = new Proxy([] as Route[], {
-  get(target, prop, receiver) {
+  get(_target, prop) {
     const rList = loadRoutesOnce().routes;
     const value = Reflect.get(rList, prop, rList);
     if (typeof value === 'function') {
@@ -29,7 +29,7 @@ const routes = new Proxy([] as Route[], {
 });
 
 const routeMap = new Proxy(new Map<string, Route>(), {
-  get(target, prop, receiver) {
+  get(_target, prop) {
     const rMap = loadRoutesOnce().routeMap;
     const value = Reflect.get(rMap, prop, rMap);
     if (typeof value === 'function') {

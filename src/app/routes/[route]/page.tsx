@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { MapPin, Clock, Phone, CheckCircle, Navigation, ArrowLeftRight, Info, Route as RouteIcon } from 'lucide-react';
+import { MapPin, Clock, Phone, Navigation, ArrowLeftRight, Info, Route as RouteIcon } from 'lucide-react';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import HeroBanner from '@/components/HeroBanner';
 
@@ -10,8 +10,8 @@ import BookingForm from '@/components/BookingForm';
 import FAQSection from '@/components/FAQSection';
 import GoogleMapEmbed from '@/components/GoogleMapEmbed';
 import FareCalculator from '@/components/FareCalculator';
-import FleetSection from '@/components/FleetSection';
-import { getCity, getState, getVehicles, BUSINESS } from '@/lib/data';
+import VehicleCards from '@/components/VehicleCards';
+import { getCity, getState, BUSINESS } from '@/lib/data';
 import { getRoute, getStaticRouteSlugs, getRoutesFrom, getPopularLocalRoutes } from '@/lib/routeData';
 import { generateRouteMetadata, generateFaqSchema, generateBreadcrumbSchema, generateEnhancedRouteSchema } from '@/lib/seo';
 import { generateRoutePageContent } from '@/lib/routeContent';
@@ -22,11 +22,11 @@ export const dynamicParams = true;
 // Cache each page for 30 days after first generation
 export const revalidate = 2592000; // 30 days — reduces ISR writes by 30x vs daily
 
-// Pre-build the top 50 most critical hub routes at build time.
+// Pre-build the top hub routes at build time.
 // All other routes generate on first visitor request and are cached for 30 days.
-// This reduces ISR reads by pre-warming the most popular pages.
+// CRITICAL: This number MUST match the sitemap — only pre-built routes appear in sitemaps.
 export async function generateStaticParams() {
-  return getStaticRouteSlugs(50).map(slug => ({ route: slug }));
+  return getStaticRouteSlugs().map(slug => ({ route: slug }));
 }
 
 
@@ -87,7 +87,6 @@ export default async function RoutePage({ params }: { params: Promise<{ route: s
   const relatedRoutes = getRoutesFrom(route.from).filter(r => r.slug !== route.slug).slice(0, 8);
   const localRoutesFrom = getPopularLocalRoutes(route.from, 6);
   const localRoutesTo = getPopularLocalRoutes(route.to, 6);
-  const vehicles = getVehicles();
 
   // Generate rich, unique content for this route
   const content = generateRoutePageContent({
@@ -449,11 +448,10 @@ export default async function RoutePage({ params }: { params: Promise<{ route: s
         </div>
       </section>
 
-      {/* Fleet Section — Vehicle Selection for This Route */}
-      <FleetSection
+      {/* Vehicle Cards — Click to Book */}
+      <VehicleCards
         fromName={route.fromName}
         toName={route.toName}
-        routeSlug={route.slug}
         priceSaloon={route.priceSaloon}
         priceSuv={route.priceSuv}
         priceTempo={route.priceTempo}

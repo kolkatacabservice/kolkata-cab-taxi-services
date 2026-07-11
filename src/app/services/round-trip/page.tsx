@@ -7,7 +7,7 @@ import GoogleMapEmbed from '@/components/GoogleMapEmbed';
 import { BUSINESS } from '@/lib/data';
 import { getPopularRoutes } from '@/lib/routeData';
 import { generateServicePageMetadata, generateFaqSchema, generateBreadcrumbSchema, generateServiceTypeSchema } from '@/lib/seo';
-import { Phone, CheckCircle, Route } from 'lucide-react';
+import { Phone, CheckCircle } from 'lucide-react';
 
 export const dynamic = 'force-static';
 export const revalidate = false;

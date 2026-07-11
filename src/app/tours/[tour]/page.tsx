@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { MapPin, Clock, Car, Phone, CheckCircle, XCircle, ChevronRight, ArrowRight } from 'lucide-react';
+import { MapPin, Clock, Car, Phone, CheckCircle, XCircle, ArrowRight } from 'lucide-react';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import HeroBanner from '@/components/HeroBanner';
 

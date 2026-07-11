@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Calculator, MapPin, Car, Phone, ArrowRight, IndianRupee, Clock, Route as RouteIcon, ChevronDown, Sparkles } from 'lucide-react';
+import { Calculator, MapPin, Phone, Clock, Route as RouteIcon, Sparkles } from 'lucide-react';
 import { BUSINESS, getAllCities, getStateFares } from '@/lib/data';
+
+const allCities = getAllCities();
 
 interface FareCalculatorProps {
   defaultFrom?: string;
@@ -23,8 +25,6 @@ interface FareResult {
 }
 
 export default function FareCalculator({ defaultFrom = '', defaultTo = '' }: FareCalculatorProps) {
-  const allCities = getAllCities();
-
   const [from, setFrom] = useState(defaultFrom);
   const [to, setTo] = useState(defaultTo);
   const [result, setResult] = useState<FareResult | null>(null);
@@ -38,7 +38,7 @@ export default function FareCalculator({ defaultFrom = '', defaultTo = '' }: Far
       c => c.name.toLowerCase() === normalized || c.slug === normalized
     );
     return city?.slug || null;
-  }, [allCities]);
+  }, []);
 
   // Resolve source city's stateSlug for state-aware rates
   const getFromStateSlug = useCallback((input: string): string => {
@@ -47,7 +47,7 @@ export default function FareCalculator({ defaultFrom = '', defaultTo = '' }: Far
       c => c.name.toLowerCase() === normalized || c.slug === normalized
     );
     return city?.state ?? 'west-bengal';
-  }, [allCities]);
+  }, []);
 
   const calculateFare = useCallback(() => {
     setError('');
@@ -60,72 +60,62 @@ export default function FareCalculator({ defaultFrom = '', defaultTo = '' }: Far
 
     setCalculating(true);
 
-    // Simulate a brief calculation animation
-    setTimeout(() => {
-      const fromSlug = findCitySlug(from);
-      const toSlug = findCitySlug(to);
-      // Get state-specific rates for the FROM city
-      const fromStateSlug = getFromStateSlug(from);
-      const stateFares = getStateFares(fromStateSlug);
-      const RATES = {
-        sedan: stateFares.sedan.pricePerKm,
-        suv:   stateFares.suv.pricePerKm,
-        tempo: stateFares.tempo.pricePerKm,
-        luxury: stateFares.luxury.pricePerKm,
+    const fromSlug = findCitySlug(from);
+    const toSlug = findCitySlug(to);
+    const fromStateSlug = getFromStateSlug(from);
+    const stateFares = getStateFares(fromStateSlug);
+    const RATES = {
+      sedan: stateFares.sedan.pricePerKm,
+      suv:   stateFares.suv.pricePerKm,
+      tempo: stateFares.tempo.pricePerKm,
+      luxury: stateFares.luxury.pricePerKm,
+    };
+
+    const fromCity = allCities.find(c => c.slug === fromSlug || c.name.toLowerCase() === from.toLowerCase().trim().split(',')[0].trim());
+    const toCity = allCities.find(c => c.slug === toSlug || c.name.toLowerCase() === to.toLowerCase().trim().split(',')[0].trim());
+
+    if (fromCity && toCity) {
+      const R = 6371;
+      const dLat = (toCity.lat - fromCity.lat) * Math.PI / 180;
+      const dLng = (toCity.lng - fromCity.lng) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(fromCity.lat * Math.PI / 180) * Math.cos(toCity.lat * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const straightLine = R * c;
+      const roadDistance = Math.round(straightLine * 1.3);
+      const hours = Math.round(roadDistance / 55);
+      const duration = hours <= 1 ? '1-2' : `${hours}-${hours + 1}`;
+
+      const calcFare = (rate: typeof stateFares.sedan): number => {
+        const km = roadDistance;
+        if (rate.shortDistanceThreshold && rate.longDistancePerKm) {
+          if (km <= rate.shortDistanceThreshold) {
+            const billedKm = Math.max(km, rate.minKm);
+            return rate.baseFare + billedKm * rate.pricePerKm;
+          } else {
+            const billedKm = Math.max(km, rate.longDistanceMinKm ?? km);
+            return billedKm * rate.longDistancePerKm;
+          }
+        }
+        return Math.max(km * rate.pricePerKm, rate.baseFare);
       };
 
-      // Estimate based on straight-line distance + state-specific per-km rates
-      const fromCity = allCities.find(c => c.slug === fromSlug || c.name.toLowerCase() === from.toLowerCase().trim().split(',')[0].trim());
-      const toCity = allCities.find(c => c.slug === toSlug || c.name.toLowerCase() === to.toLowerCase().trim().split(',')[0].trim());
-
-      if (fromCity && toCity) {
-        // Haversine distance * 1.3 road factor
-        const R = 6371;
-        const dLat = (toCity.lat - fromCity.lat) * Math.PI / 180;
-        const dLng = (toCity.lng - fromCity.lng) * Math.PI / 180;
-        const a = Math.sin(dLat / 2) ** 2 + Math.cos(fromCity.lat * Math.PI / 180) * Math.cos(toCity.lat * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const straightLine = R * c;
-        const roadDistance = Math.round(straightLine * 1.3);
-        const hours = Math.round(roadDistance / 55);
-        const duration = hours <= 1 ? '1-2' : `${hours}-${hours + 1}`;
-
-        // Two-tier fare calculation (supports Odisha-style base+perKm / flat-longDistance)
-        const calcFare = (rate: typeof stateFares.sedan): number => {
-          const km = roadDistance;
-          if (rate.shortDistanceThreshold && rate.longDistancePerKm) {
-            if (km <= rate.shortDistanceThreshold) {
-              // Short trip: base fare + per km (min km applies)
-              const billedKm = Math.max(km, rate.minKm);
-              return rate.baseFare + billedKm * rate.pricePerKm;
-            } else {
-              // Long trip: flat per-km, min km applies
-              const billedKm = Math.max(km, rate.longDistanceMinKm ?? km);
-              return billedKm * rate.longDistancePerKm;
-            }
-          }
-          // Standard: max(km × perKm, baseFare)
-          return Math.max(km * rate.pricePerKm, rate.baseFare);
-        };
-
-        setResult({
-          distance: roadDistance,
-          duration,
-          sedan:  calcFare(stateFares.sedan),
-          suv:    calcFare(stateFares.suv),
-          tempo:  calcFare(stateFares.tempo),
-          luxury: calcFare(stateFares.luxury),
-          routeExists: false,
-          fromName: fromCity.name,
-          toName: toCity.name,
-          rates: RATES,
-        });
-      } else {
-        setError('City not found. Please select from the suggestions or call us for a quote.');
-      }
-      setCalculating(false);
-    }, 600);
-  }, [from, to, findCitySlug, getFromStateSlug, allCities]);
+      setResult({
+        distance: roadDistance,
+        duration,
+        sedan:  calcFare(stateFares.sedan),
+        suv:    calcFare(stateFares.suv),
+        tempo:  calcFare(stateFares.tempo),
+        luxury: calcFare(stateFares.luxury),
+        routeExists: false,
+        fromName: fromCity.name,
+        toName: toCity.name,
+        rates: RATES,
+      });
+    } else {
+      setError('City not found. Please select from the suggestions or call us for a quote.');
+    }
+    setCalculating(false);
+  }, [from, to, findCitySlug, getFromStateSlug]);
 
   const getWhatsAppUrl = () => {
     if (!result) return '#';

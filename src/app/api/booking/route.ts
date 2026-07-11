@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { BUSINESS } from '@/lib/data';
 
 // Google Apps Script Web App URL — deployed as "Anyone can access"
 const GOOGLE_SCRIPT_URL = (process.env.GOOGLE_SCRIPT_URL || '').replace(/[\r\n]/g, '').trim();
@@ -82,7 +83,7 @@ export async function POST(request: NextRequest) {
       if (err instanceof Error && err.name === 'AbortError') {
         console.error('❌ Google Script timed out after 25s');
         return NextResponse.json(
-          { success: false, error: 'Request timed out. Please call us at +916204811752.' },
+          { success: false, error: `Request timed out. Please call us at ${BUSINESS.phone}.` },
           { status: 504 }
         );
       }

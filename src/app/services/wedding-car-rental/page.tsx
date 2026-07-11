@@ -6,7 +6,7 @@ import FAQSection from '@/components/FAQSection';
 import GoogleMapEmbed from '@/components/GoogleMapEmbed';
 import { BUSINESS } from '@/lib/data';
 import { generateServicePageMetadata, generateFaqSchema, generateBreadcrumbSchema, generateWeddingCarSchema } from '@/lib/seo';
-import { Heart, Phone, CheckCircle, Star } from 'lucide-react';
+import { Heart, Phone, CheckCircle } from 'lucide-react';
 
 export const dynamic = 'force-static';
 export const revalidate = false;

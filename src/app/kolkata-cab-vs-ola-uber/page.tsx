@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
-import { Phone, CheckCircle, XCircle, Star, Shield, Clock, Car, CreditCard, MapPin } from 'lucide-react';
+import { Phone, CheckCircle, XCircle, Shield, Clock, Car, CreditCard, MapPin } from 'lucide-react';
 import HeroBanner from '@/components/HeroBanner';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import FAQSection from '@/components/FAQSection';

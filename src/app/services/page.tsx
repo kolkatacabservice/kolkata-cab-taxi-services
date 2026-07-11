@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { MapPin, Route, ArrowRight, Repeat, Plane, Heart, Building, Phone, Car } from 'lucide-react';
+import { MapPin, Route, ArrowRight, Repeat, Plane, Heart, Building, Phone } from 'lucide-react';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import HeroBanner from '@/components/HeroBanner';
 import FAQSection from '@/components/FAQSection';
 import GoogleMapEmbed from '@/components/GoogleMapEmbed';
-import { BUSINESS, getServices } from '@/lib/data';
+import { BUSINESS } from '@/lib/data';
 import { generateFaqSchema, generateBreadcrumbSchema } from '@/lib/seo';
 
 export const dynamic = 'force-static';

@@ -7,7 +7,7 @@ import FAQSection from '@/components/FAQSection';
 import GoogleMapEmbed from '@/components/GoogleMapEmbed';
 import { BUSINESS } from '@/lib/data';
 import { generateFaqSchema, generateBreadcrumbSchema, generateAirportTransferSchema } from '@/lib/seo';
-import { Plane, Clock, Shield, CheckCircle, Phone, MapPin, Star } from 'lucide-react';
+import { Plane, Clock, Shield, CheckCircle, Phone, Star } from 'lucide-react';
 
 export const dynamic = 'force-static';
 export const revalidate = false;

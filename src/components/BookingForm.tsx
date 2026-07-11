@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { MapPin, Calendar, Car, User, Phone, Send, ChevronDown, CheckCircle, AlertCircle, RotateCcw } from 'lucide-react';
 import { BUSINESS, getAllCities } from '@/lib/data';
 
@@ -10,6 +10,7 @@ const allCities = getAllCities();
 interface BookingFormProps {
   defaultFrom?: string;
   defaultTo?: string;
+  defaultCarType?: string;
   compact?: boolean;
   flat?: boolean;
 }
@@ -26,22 +27,31 @@ type FormState = {
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 
-export default function BookingForm({ defaultFrom = '', defaultTo = '', compact = false, flat = false }: BookingFormProps) {
+export default function BookingForm({ defaultFrom = '', defaultTo = '', defaultCarType = 'sedan', compact = false, flat = false }: BookingFormProps) {
   const getInitialForm = useCallback((): FormState => ({
     from: defaultFrom,
     to: defaultTo,
     tripType: 'one-way',
     date: '',
-    carType: 'sedan',
+    carType: defaultCarType,
     name: '',
     phone: '',
-  }), [defaultFrom, defaultTo]);
+  }), [defaultFrom, defaultTo, defaultCarType]);
 
   const [form, setForm] = useState<FormState>(getInitialForm);
   const [status, setStatus] = useState<SubmitStatus>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   // Store submitted data for the success screen
   const [submittedData, setSubmittedData] = useState<{ phone: string; whatsappUrl: string } | null>(null);
+
+  useEffect(() => {
+    function handleVehicleSelect(e: Event) {
+      const vehicle = (e as CustomEvent).detail?.vehicle;
+      if (vehicle) setForm(prev => ({ ...prev, carType: vehicle }));
+    }
+    window.addEventListener('selectVehicle', handleVehicleSelect);
+    return () => window.removeEventListener('selectVehicle', handleVehicleSelect);
+  }, []);
 
   const getCarLabel = (carType: string) => {
     switch (carType) {
