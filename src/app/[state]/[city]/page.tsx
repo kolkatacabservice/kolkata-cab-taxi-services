@@ -433,7 +433,7 @@ export default async function CityPage({ params }: { params: Promise<{ state: st
       )}
 
       {/* Booking */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-12 bg-gray-50" id="booking-form">
         <div className="max-w-2xl mx-auto px-4">
           <BookingForm defaultFrom={city.name} />
         </div>

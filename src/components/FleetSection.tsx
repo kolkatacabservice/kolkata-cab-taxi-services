@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Phone, Users, CheckCircle } from 'lucide-react';
 import { BUSINESS, getVehicles } from '@/lib/data';
-import { isHubRoute } from '@/lib/routeData';
 
 interface FleetSectionProps {
   fromName?: string;
@@ -46,8 +45,7 @@ export default function FleetSection({ fromName, toName, routeSlug, cityName, pr
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {vehicles.map((vehicle) => {
             const price = getPrice(vehicle.id);
-            const isHub = isRoute && isHubRoute(routeSlug);
-            const linkHref = isHub ? `/routes/${routeSlug}/${vehicle.id}` : isRoute ? `/routes/${routeSlug}#booking-form` : '/fleet';
+            const linkHref = '#booking-form';
             return (
               <Link key={vehicle.id} href={linkHref} className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:border-primary/30 transition-all">
                 <div className="relative h-44 bg-gradient-to-br from-accent to-orange-50">
@@ -78,7 +76,7 @@ export default function FleetSection({ fromName, toName, routeSlug, cityName, pr
                       <p className="text-xl font-bold text-primary">{price || `₹${vehicle.pricePerKm}`}<span className="text-sm text-gray-500 font-normal">{price ? '' : '/km'}</span></p>
                     </div>
                     <span className="px-4 py-2 bg-primary text-white rounded-lg font-semibold text-sm group-hover:bg-primary/90 transition-colors">
-                      {isRoute ? 'View Details' : 'Book Now'}
+                      Book Now
                     </span>
                   </div>
                 </div>
@@ -86,15 +84,6 @@ export default function FleetSection({ fromName, toName, routeSlug, cityName, pr
             );
           })}
         </div>
-
-        {!isRoute && (
-          <div className="text-center mt-8">
-            <Link href="/fleet" className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-white font-semibold rounded-full hover:bg-secondary/90 transition-colors">
-              View Full Fleet →
-            </Link>
-          </div>
-        )}
-      </div>
     </section>
   );
 }
