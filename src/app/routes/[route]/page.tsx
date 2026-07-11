@@ -17,14 +17,10 @@ import { generateRouteMetadata, generateFaqSchema, generateBreadcrumbSchema, gen
 import { generateRoutePageContent } from '@/lib/routeContent';
 import { formatBoldText, parseParagraphsWithBold } from '@/lib/textHelper';
 
-// ALL route slugs are pre-built at deploy time. No ISR, zero writes.
-// Any slug NOT in generateStaticParams returns a hard 404.
-export const dynamicParams = false;
-export const dynamic = 'force-static';
-export const revalidate = false;
-
-// Pre-build ALL routes at build time — fully static, no ISR.
-// CRITICAL: This number MUST match the sitemap — only pre-built routes appear in sitemaps.
+// Priority routes pre-built at deploy time (zero ISR).
+// Other routes generated on first visit, cached for 24 hours.
+export const dynamicParams = true;
+export const revalidate = 86400;
 export async function generateStaticParams() {
   return getStaticRouteSlugs().map(slug => ({ route: slug }));
 }

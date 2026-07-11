@@ -151,11 +151,12 @@ export function getLinkedVehicleRouteSlugs(): string[] {
 }
 
 /**
- * Returns ALL route slugs for fully-static SSG.
- * Every route in routes.json is pre-built at deploy time — zero ISR, zero 404s.
+ * Returns priority route slugs for fully-static SSG.
+ * Linked/high-priority routes are pre-built at deploy time — zero ISR.
+ * Remaining routes use dynamicParams=true with revalidate=86400 (on-demand, cached 24h).
  */
 export function getStaticRouteSlugs(): string[] {
-  return getAllRouteSlugs();
+  return getLinkedRouteSlugs();
 }
 
 /**
