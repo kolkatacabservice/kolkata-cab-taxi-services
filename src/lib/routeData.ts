@@ -151,13 +151,11 @@ export function getLinkedVehicleRouteSlugs(): string[] {
 }
 
 /**
- * Returns ALL internally-linked route slugs for fully-static SSG.
- * Uses getLinkedRouteSlugs() to cover every route that appears in
- * internal cross-links (city pages, state pages, footer, etc.).
- * This eliminates ALL ISR writes — every route is pre-built at deploy time.
+ * Returns ALL route slugs for fully-static SSG.
+ * Every route in routes.json is pre-built at deploy time — zero ISR, zero 404s.
  */
 export function getStaticRouteSlugs(): string[] {
-  return getLinkedRouteSlugs();
+  return getAllRouteSlugs();
 }
 
 /**

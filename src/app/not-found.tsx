@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { Home, Phone, Route, Car } from 'lucide-react';
 import { BUSINESS } from '@/lib/data';
 
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export const metadata: Metadata = {
   title: `Page Not Found | ${BUSINESS.name}`,
   description: `The page you're looking for doesn't exist. Browse our cab services, routes, or contact us at ${BUSINESS.phone}.`,

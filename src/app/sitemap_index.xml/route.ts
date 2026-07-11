@@ -1,5 +1,6 @@
 // Fully static — sitemap structure only changes on deploy
 export const dynamic = 'force-static';
+export const revalidate = false;
 
 
 
@@ -13,8 +14,6 @@ export async function GET() {
     `${DOMAIN}/sitemap/2.xml`,
     `${DOMAIN}/sitemap/3.xml`,
     `${DOMAIN}/sitemap/4.xml`,
-    `${DOMAIN}/sitemap/5.xml`,  // Vehicle-specific route pages part 1
-    `${DOMAIN}/sitemap/6.xml`,  // Vehicle-specific route pages part 2
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

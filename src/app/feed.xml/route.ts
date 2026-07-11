@@ -3,6 +3,7 @@ import blogsData from '@/data/blogs.json';
 
 // Fully static — blog data comes from JSON, only changes on deploy
 export const dynamic = 'force-static';
+export const revalidate = false;
 
 // Fixed build date — prevents non-deterministic output which breaks true static caching.
 // Update this date manually when blog content changes significantly.
