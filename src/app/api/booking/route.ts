@@ -27,10 +27,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Check env var configured
-    if (!GOOGLE_SCRIPT_URL) {
-      console.error('🚨 GOOGLE_SCRIPT_URL env variable is not set!');
+    if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes('YOUR_DEPLOYMENT_ID')) {
+      console.error('🚨 GOOGLE_SCRIPT_URL env variable is not set or is still the default placeholder!');
       return NextResponse.json(
-        { success: false, error: 'Booking service not configured. Please call us directly.' },
+        { success: false, error: 'Booking service is not configured (missing URL). Please call us directly.' },
         { status: 500 }
       );
     }
@@ -67,6 +67,21 @@ export async function POST(request: NextRequest) {
         // ANY 200 response = success (Script returns JSON or HTML — both are OK)
         const resText = await response.text().catch(() => '');
         console.log('✅ Booking sent to Google Sheets. Status:', response.status, '| Response:', resText.substring(0, 200));
+        
+        // Check if the response is JSON and contains success: false
+        try {
+          const resJson = JSON.parse(resText);
+          if (resJson && resJson.success === false) {
+            console.error('❌ Google Script returned execution error:', resJson.error);
+            return NextResponse.json(
+              { success: false, error: `Booking submission failed: ${resJson.error || 'Please call us directly.'}` },
+              { status: 502 }
+            );
+          }
+        } catch {
+          // If response is not valid JSON, treat 200 OK as success
+        }
+
         return NextResponse.json({
           success: true,
           message: 'Booking submitted successfully! We will call you shortly.',
@@ -75,7 +90,7 @@ export async function POST(request: NextRequest) {
         const errText = await response.text().catch(() => 'unknown');
         console.error('❌ Google Script HTTP error:', response.status, errText.substring(0, 300));
         return NextResponse.json(
-          { success: false, error: 'Unable to submit booking. Please call us directly.' },
+          { success: false, error: `Unable to submit booking (HTTP ${response.status}). Please call us directly.` },
           { status: 502 }
         );
       }
@@ -89,7 +104,7 @@ export async function POST(request: NextRequest) {
       }
       console.error('❌ Google Script fetch error:', err);
       return NextResponse.json(
-        { success: false, error: 'Unable to submit booking. Please call us directly.' },
+        { success: false, error: `Connection failed: ${err instanceof Error ? err.message : 'Unknown network error'}. Please call us directly.` },
         { status: 502 }
       );
     }
