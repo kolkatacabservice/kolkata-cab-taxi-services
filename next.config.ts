@@ -3,11 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactCompiler: true,
 
-  // ── Cloudflare Workers via @opennextjs/cloudflare ────────────────────────
-  // Build command: npm run build:cf  (opennextjs-cloudflare build)
-  // Output dir:    .open-next/
-  // worker.js  → Cloudflare Worker (handles SSR, API routes, proxy)
-  // assets/    → Static files served via Workers Static Assets
+  // ── Cloudflare Pages via @cloudflare/next-on-pages ────────────────────────
+  // Build command: npx @cloudflare/next-on-pages@1
+  // Output dir:    .vercel/output/static
+  // Route pages (13,808) → edge runtime, dynamically served by CF worker
+  // City/service pages (~700) → pre-rendered static HTML
+  // Keeps file count well under Cloudflare Pages 20,000 file limit
 
   experimental: {
     // No experimental flags — keep build clean and predictable
