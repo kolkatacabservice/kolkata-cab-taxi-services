@@ -65,12 +65,12 @@ const serviceCards = [
     features: ['No return fare', 'Point-to-point', 'All routes available', 'Cheapest option'],
   },
   {
-    name: 'Two-Way / Round Trip',
+    name: 'Round Trip / Two-Way',
     slug: 'round-trip',
     icon: Repeat,
     price: 'From ₹12/km',
-    desc: 'Complete round trip with driver accommodation for multi-day tours, pilgrimages, and vacations.',
-    features: ['Driver stays with you', 'Multi-day available', 'Custom itinerary', '250km/day min'],
+    desc: 'Same driver for onward & return journey — multi-day tours, same-day returns, pilgrimages, and vacations. Driver stays with you.',
+    features: ['Same driver both ways', 'Same-day & multi-day', 'Custom itinerary', '250km/day min'],
   },
   {
     name: 'Airport Transfer',

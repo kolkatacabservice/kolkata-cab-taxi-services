@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// ── Cloudflare Pages compatibility ──────────────────────────────────────────
+export const runtime = 'edge';
+
 /**
  * IndexNow API — Instantly notify search engines about changed URLs.
  * 

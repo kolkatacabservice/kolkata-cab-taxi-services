@@ -7,7 +7,7 @@ export const revalidate = false;
 export async function GET() {
   const DOMAIN = 'https://www.kolkatacabservice.com';
   // Fixed date to prevent false freshness signals — updates automatically on each deploy/build
-  const LAST_MODIFIED = '2026-06-11T00:00:00.000Z';
+  const LAST_MODIFIED = '2026-07-15T06:00:00.000Z';
   const sitemaps = [
     `${DOMAIN}/sitemap/0.xml`,
     `${DOMAIN}/sitemap/1.xml`,

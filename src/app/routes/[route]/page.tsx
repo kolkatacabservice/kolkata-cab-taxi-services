@@ -13,14 +13,15 @@ import FareCalculator from '@/components/FareCalculator';
 import VehicleCards from '@/components/VehicleCards';
 import { getCity, getState, BUSINESS } from '@/lib/data';
 import { getRoute, getStaticRouteSlugs, getRoutesFrom, getPopularLocalRoutes } from '@/lib/routeData';
-import { generateRouteMetadata, generateFaqSchema, generateBreadcrumbSchema, generateEnhancedRouteSchema } from '@/lib/seo';
+import { generateRouteMetadata, generateFaqSchema, generateBreadcrumbSchema, generateEnhancedRouteSchema, generateSpeakableRouteSchema } from '@/lib/seo';
 import { generateRoutePageContent } from '@/lib/routeContent';
 import { formatBoldText, parseParagraphsWithBold } from '@/lib/textHelper';
 
-// Priority routes pre-built at deploy time (zero ISR).
-// Other routes generated on first visit, cached for 24 hours.
-export const dynamicParams = true;
-export const revalidate = 86400;
+// ALL routes pre-built at deploy time — zero ISR, fully static for Cloudflare Pages free plan.
+// dynamicParams=false: unknown routes → 404 (no on-demand generation)
+export const dynamicParams = false;
+export const dynamic = 'force-static';
+export const revalidate = false;
 export async function generateStaticParams() {
   return getStaticRouteSlugs().map(slug => ({ route: slug }));
 }
@@ -114,6 +115,8 @@ export default async function RoutePage({ params }: { params: Promise<{ route: s
         { name: 'Routes', url: `${BUSINESS.domain}/routes` },
         { name: `${route.fromName} to ${route.toName}`, url: `${BUSINESS.domain}/routes/${route.slug}` },
       ])) }} />
+      {/* Speakable schema — marks H1 + Quick Answer Box for AI Overviews / voice search */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateSpeakableRouteSchema(route.fromName, route.toName, route.slug)) }} />
 
       {/* Hero */}
       <section className="relative text-white py-12 lg:py-16 overflow-hidden">

@@ -151,17 +151,22 @@ export function getLinkedVehicleRouteSlugs(): string[] {
 }
 
 /**
- * Returns priority route slugs for fully-static SSG.
- * Linked/high-priority routes are pre-built at deploy time — zero ISR.
- * Remaining routes use dynamicParams=true with revalidate=86400 (on-demand, cached 24h).
+ * Returns ALL route slugs for fully-static SSG.
+ * ALL 13,808 routes (forward + reverse) are pre-built at deploy time — zero ISR.
+ * This ensures every route page is instantly crawlable by Googlebot.
+ *
+ * Build time ~5-8 min, but 100% of pages are statically served — no on-demand delay.
  */
 export function getStaticRouteSlugs(): string[] {
-  return getLinkedRouteSlugs();
+  // Return every single route in the database — both forward and reverse
+  // This eliminates ISR for ALL route pages, maximising Google crawlability
+  return routes.map(r => r.slug);
 }
 
 /**
+ * @deprecated Use getStaticRouteSlugs() instead.
  * Returns hub route slugs for vehicle-specific SSG pages.
- * @deprecated Vehicle pages now redirect to route page #booking-form.
+ * Vehicle pages now redirect to route page #booking-form.
  */
 export function getStaticVehicleRouteSlugs(): string[] {
   return getLinkedVehicleRouteSlugs();

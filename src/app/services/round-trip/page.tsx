@@ -13,17 +13,18 @@ export const dynamic = 'force-static';
 export const revalidate = false;
 
 export const metadata = generateServicePageMetadata(
-  'Round Trip Cab Service',
-  'Round trip cab from Kolkata with driver. Multi-day tours, pilgrimage, family vacation. Driver stays with you. Sedan ₹12/km, SUV ₹16/km'
+  'Round Trip & Two Way Cab Service',
+  'Round trip & two-way cab from Kolkata with driver. Same-day returns, multi-day tours, pilgrimage, family vacation. Driver stays with you. Sedan ₹12/km, SUV ₹16/km'
 );
 
 export default function RoundTripPage() {
   const routes = getPopularRoutes(9);
 
   const faqs = [
-    { question: 'What is round trip cab service from Kolkata?', answer: `Round trip cab from Kolkata means the driver accompanies you from Kolkata to your destination and stays with you for the full trip duration, then brings you back to Kolkata. Ideal for multi-day tours, pilgrimages, and family vacations. Call ${BUSINESS.phone}.` },
+    { question: 'What is round trip / two-way cab service from Kolkata?', answer: `Round trip (two-way) cab from Kolkata means the driver accompanies you from Kolkata to your destination and stays with you for the full trip duration, then brings you back. Ideal for same-day returns, multi-day tours, pilgrimages, and family vacations. Call ${BUSINESS.phone}.` },
     { question: 'What is the round trip cab fare from Kolkata?', answer: 'Round trip cab fare from Kolkata: Sedan ₹12/km (minimum 250 km/day), SUV ₹16/km, Innova Crysta ₹18/km, Tempo Traveller ₹22/km. Driver allowance ₹300/night included. Toll, parking extra.' },
-    { question: 'What is the difference between one-way and round trip cab?', answer: 'One-way: driver drops you at destination and returns, you pay only one side. Round trip: driver stays with you for the entire duration (including return). Round trip is better for tours where you need the cab throughout your stay.' },
+    { question: 'What is the difference between one-way and round trip cab?', answer: 'One-way: driver drops you at destination and returns, you pay only one side. Round trip (two-way): driver stays with you for the entire duration (including return). Round trip is better for tours where you need the cab throughout your stay.' },
+    { question: 'Can I do same-day return (two-way) from Kolkata?', answer: `Yes! Same-day return trips where driver picks you up, waits at destination, and brings you back. Kolkata to Durgapur same-day: ~330 km total, Sedan approx ₹3,630. Waiting charge ₹150/hr after first 30 min. Call ${BUSINESS.phone}.` },
     { question: 'Can I do Kolkata to Darjeeling-Gangtok round trip?', answer: 'Yes! Our most popular round trip from Kolkata is Darjeeling-Gangtok (5-7 days). Innova Crysta recommended (handles mountain roads well). Full itinerary support, sightseeing stops included. Call for custom quote.' },
     { question: 'Is driver accommodation included in round trip?', answer: 'Yes! Driver accommodation is included in all round trip cab bookings from Kolkata. The driver manages his own stay at each destination. Driver allowance of ₹300/night is included in the quoted fare.' },
     { question: 'What are popular round trip packages from Kolkata?', answer: 'Popular round trips from Kolkata: Kolkata-Digha-Kolkata (2 days), Kolkata-Darjeeling-Kolkata (4-5 days), Kolkata-Puri-Konark-Kolkata (3-4 days), Kolkata-Varanasi-Ayodhya-Kolkata (5-6 days), Kolkata-Sundarbans-Kolkata (2-3 days).' },

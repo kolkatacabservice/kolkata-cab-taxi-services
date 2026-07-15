@@ -13,7 +13,7 @@ import areasData from '@/data/kolkata-areas.json';
 
 const DOMAIN = 'https://www.kolkatacabservice.com';
 // Fixed build-date constant to prevent "fake freshness" signals to Google on every build
-const LAST_MODIFIED = '2026-06-16T11:00:00.000Z';
+const LAST_MODIFIED = '2026-07-15T06:00:00.000Z';
 
 // High-value REVERSE routes that need top priority (not in special landing pages)
 const REVERSE_HUB_ROUTES = [
@@ -74,7 +74,7 @@ const POPULAR_DESTINATIONS = [
 
 // City sub-page service types that should be indexed
 const CITY_SERVICE_TYPES = [
-  'local', 'outstation', 'one-way', 'two-way', 'round-trip', 'airport-transfer', 'wedding-car',
+  'local', 'outstation', 'one-way', 'round-trip', 'airport-transfer', 'wedding-car',
 ] as const;
 
 // Generate 5 sub-sitemaps (vehicle-specific route pages removed — redirect to booking form)
@@ -102,8 +102,7 @@ export default async function sitemap({ id }: { id: Promise<string> }): Promise<
         { url: `${DOMAIN}/services/local-taxi`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.90 },
         { url: `${DOMAIN}/services/outstation`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.90 },
         { url: `${DOMAIN}/services/one-way`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.90 },
-        { url: `${DOMAIN}/services/two-way`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.80 },
-        { url: `${DOMAIN}/services/round-trip`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.85 },
+        { url: `${DOMAIN}/services/round-trip`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.90 },
         { url: `${DOMAIN}/services/airport-transfer`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.92 },
         { url: `${DOMAIN}/services/wedding-car-rental`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.85 },
         { url: `${DOMAIN}/services/corporate-car-rental`, lastModified: LAST_MODIFIED, changeFrequency: 'monthly', priority: 0.85 },
@@ -142,25 +141,31 @@ export default async function sitemap({ id }: { id: Promise<string> }): Promise<
       return [...statePages, ...cityPages];
     }
 
-    // Route pages — ONLY pre-built routes (must match generateStaticParams).
-    // Listing un-prebuilt routes causes ISR writes on every search engine crawl.
+    // Route pages — ALL 13,808 routes are now pre-built (matches generateStaticParams).
+    // Zero ISR for any route page — every URL is instantly crawlable by Googlebot.
     case '2': {
       const routeMap = new Map(routes.map(r => [r.slug, r]));
       const staticSlugs = getStaticRouteSlugs();
-      return staticSlugs.map(slug => {
-        const route = routeMap.get(slug)!;
-        const isHighPriority = (
-          (HUB_SLUGS.includes(route.from) && POPULAR_DESTINATIONS.includes(route.to)) ||
-          (HUB_SLUGS.includes(route.to) && POPULAR_DESTINATIONS.includes(route.from))
-        );
-        const isReverseHubRoute = REVERSE_HUB_ROUTES.includes(route.slug);
-        return {
-          url: `${DOMAIN}/routes/${route.slug}`,
-          lastModified: LAST_MODIFIED,
-          changeFrequency: 'monthly' as const,
-          priority: isReverseHubRoute ? 0.95 : isHighPriority ? 0.88 : 0.65,
-        };
-      });
+      return staticSlugs
+        .map(slug => {
+          const route = routeMap.get(slug);
+          if (!route) return null; // safety guard
+          const isHighPriority = (
+            (HUB_SLUGS.includes(route.from) && POPULAR_DESTINATIONS.includes(route.to)) ||
+            (HUB_SLUGS.includes(route.to) && POPULAR_DESTINATIONS.includes(route.from))
+          );
+          const isReverseHubRoute = REVERSE_HUB_ROUTES.includes(route.slug);
+          let priority = 0.72; // default for all routes
+          if (isReverseHubRoute) priority = 0.95;
+          else if (isHighPriority) priority = 0.88;
+          return {
+            url: `${DOMAIN}/routes/${route.slug}`,
+            lastModified: LAST_MODIFIED,
+            changeFrequency: 'monthly' as const,
+            priority,
+          };
+        })
+        .filter(Boolean) as MetadataRoute.Sitemap;
     }
 
     // Tours + blogs + Kolkata areas

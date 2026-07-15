@@ -1,0 +1,28 @@
+# Cloudflare Pages _redirects file
+# These 301 redirects are handled at CDN edge — replaces next.config.ts redirects()
+# Format: /source  /destination  status_code
+
+# ── Two-Way → Round-Trip consolidation (pages removed) ───────────────────────
+/services/two-way  /services/round-trip  301
+/:state/:city/two-way  /:state/:city/round-trip  301
+
+# ── Sitemap redirect ──────────────────────────────────────────────────────────
+/sitemap.xml  /sitemap_index.xml  301
+
+# ── Typo corrections ─────────────────────────────────────────────────────────
+/route/:path*  /routes/:path*  301
+/service/:path*  /services/:path*  301
+
+# ── Duplicate page consolidation ─────────────────────────────────────────────
+/west-bengal/salt-lake-kolkata  /kolkata/salt-lake  301
+/west-bengal/salt-lake-kolkata/*  /kolkata/salt-lake  301
+/west-bengal/new-town-kolkata  /kolkata/new-town  301
+/west-bengal/new-town-kolkata/*  /kolkata/new-town  301
+
+# ── Stub state redirects (no content yet) ────────────────────────────────────
+/delhi-ncr  /  301
+/delhi-ncr/*  /  301
+/uttarakhand  /  301
+/uttarakhand/*  /  301
+/madhya-pradesh  /  301
+/madhya-pradesh/*  /  301

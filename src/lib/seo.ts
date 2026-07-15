@@ -113,8 +113,11 @@ export function generateRouteMetadata(
 ): Metadata {
   const routeSlug = slug || `${fromName.toLowerCase().replace(/\s+/g, '-')}-to-${toName.toLowerCase().replace(/\s+/g, '-')}`;
   const priceSuv = Math.round(priceSaloon * 1.27);
-  // Keyword-first title under 60 chars for Google — includes taxi + cab both
-  const title = `${fromName} to ${toName} Cab ₹${priceSaloon} | Taxi Book 24/7`;
+  // Keyword-first title — HARD CAP at 60 chars for Google (long city names can exceed this)
+  const titleFull = `${fromName} to ${toName} Cab ₹${priceSaloon} | Taxi Book 24/7`;
+  const title = titleFull.length > 60
+    ? `${fromName} to ${toName} Cab | ₹${priceSaloon} Taxi 24/7`.slice(0, 60)
+    : titleFull;
 
   const altWords: string[] = [];
   if (fromAlternateNames && fromAlternateNames.length > 0) altWords.push(...fromAlternateNames);
@@ -125,6 +128,7 @@ export function generateRouteMetadata(
   // Full keyword set for Bing / DDG / Yahoo — includes typo variants
   const keywords = generateRouteKeywords(fromName, toName, fromAlternateNames, toAlternateNames);
 
+  const canonicalUrl = `${DOMAIN}/routes/${routeSlug}`;
   return {
     title,
     description: desc,
@@ -134,7 +138,7 @@ export function generateRouteMetadata(
       description: `Book ${fromName} to ${toName} cab. ${distance} km, Sedan ₹${priceSaloon}, SUV ₹${priceSuv}. AC, 24/7. No surge. Call ${BUSINESS.phone}`,
       type: 'website',
       siteName: BUSINESS.name,
-      url: `${DOMAIN}/routes/${routeSlug}`,
+      url: canonicalUrl,
       locale: 'en_IN',
       images: [{ url: OG_IMAGE_URL, width: 1200, height: 630, alt: `${fromName} to ${toName} Cab Service - ${BUSINESS.name}` }],
     },
@@ -144,7 +148,14 @@ export function generateRouteMetadata(
       description: `Book ${fromName} to ${toName} taxi/cab. ${distance} km. SUV ₹${priceSuv}. AC, 24/7. No surge. Call ${BUSINESS.phone}`,
       images: [OG_IMAGE_URL],
     },
-    alternates: { canonical: `${DOMAIN}/routes/${routeSlug}` },
+    alternates: {
+      canonical: canonicalUrl,
+      // hreflang — tells Google this is an Indian English page for local search ranking
+      languages: {
+        'en-IN': canonicalUrl,
+        'x-default': canonicalUrl,
+      },
+    },
     other: {
       thumbnail: OG_IMAGE_URL,
     },
@@ -2063,6 +2074,34 @@ export function generateCabPriceSchema() {
             referenceQuantity: { '@type': 'QuantitativeValue', value: '1', unitCode: 'KMT' },
           },
         },
+      ],
+    },
+  };
+}
+
+// ═══════════════════════════════════════════════════
+// SPEAKABLE SCHEMA — Route Pages (AI Overview / Voice Search)
+// ═══════════════════════════════════════════════════
+/**
+ * Per-route Speakable schema targeting the Quick Answer Box (H2 + dl) and H1.
+ * Signals to Google which parts of the route page are suitable for AI Overviews.
+ *
+ * Per Google's spec: https://schema.org/speakable
+ * Selectors should target the most answer-dense elements on the page.
+ */
+export function generateSpeakableRouteSchema(fromName: string, toName: string, routeSlug: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: `${fromName} to ${toName} Cab`,
+    url: `${DOMAIN}/routes/${routeSlug}`,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      // Target the H1 (route title), the Quick Answer Box summary, and the first FAQ answer
+      cssSelector: [
+        'h1',
+        '[itemProp="description"]',
+        '.faq-section [itemProp="text"]:first-child',
       ],
     },
   };

@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { BUSINESS } from '@/lib/data';
 
+// ── Cloudflare Pages compatibility ──────────────────────────────────────────
+// Edge runtime uses V8 isolates (not Node.js). fetch() & Web APIs work fine.
+export const runtime = 'edge';
+
 // Google Apps Script Web App URL — deployed as "Anyone can access"
 const GOOGLE_SCRIPT_URL = (process.env.GOOGLE_SCRIPT_URL || '').replace(/[\r\n]/g, '').trim();
 

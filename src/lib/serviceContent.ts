@@ -147,8 +147,8 @@ export function generateRoundTripServiceContent(input: ServiceContentInput) {
       { question: `Do you provide round trip cab at night from ${cityName}?`, answer: `Yes! 24/7 round trip availability from ${cityName}. Same fixed rate anytime. Night charge of ₹300 applies for 10 PM–6 AM travel. No surge pricing ever.` },
     ],
     popularSearches: [
-      `round trip cab from ${cityName}`, `round trip taxi ${cityName}`, `two way cab ${cityName}`,
-      `${cityName} round trip cab service`, `multi day cab ${cityName}`, `return trip taxi ${cityName}`,
+      `round trip cab from ${cityName}`, `round trip taxi ${cityName}`, `return trip taxi ${cityName}`,
+      `${cityName} round trip cab service`, `multi day cab ${cityName}`, `same day return cab ${cityName}`,
       `cab for tour from ${cityName}`, `${cityName} round trip fare`, `book round trip cab ${cityName}`,
     ],
   };

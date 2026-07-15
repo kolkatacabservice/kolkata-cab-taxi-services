@@ -12,15 +12,18 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    // AVIF is 30-50% smaller than WebP — reduces Fast Origin Transfer significantly
+    // ── Cloudflare Pages compatibility ───────────────────────────────────────
+    // Cloudflare Pages does not support Next.js server-side image optimization.
+    // Images are served as-is from the static build output.
+    // Cloudflare's global CDN (free plan) auto-compresses images via Polish (paid)
+    // or you can use Cloudflare Images ($5/mo) for optimization.
+    // For now: unoptimized=true disables the Node.js optimizer — fully edge-compatible.
+    unoptimized: true,
+    // Keep format hints for future migration to Cloudflare Images
     formats: ['image/avif', 'image/webp'],
-    // Optimized device sizes — avoids serving oversized images on mobile
     deviceSizes: [390, 640, 750, 1080, 1920],
-    // Smaller image sizes for thumbnails/cards
     imageSizes: [16, 32, 64, 128, 256],
-    // Max cache TTL — images cached for 1 year in CDN, zero re-transfer
     minimumCacheTTL: 31536000,
-    // Limit concurrent image optimization to reduce Fluid CPU usage
     dangerouslyAllowSVG: false,
     contentDispositionType: 'attachment',
   },
@@ -109,6 +112,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // ── Two-Way → Round-Trip consolidation (two-way pages removed) ─────────
+      // All two-way service pages are consolidated into round-trip (same service)
+      { source: '/services/two-way', destination: '/services/round-trip', permanent: true },
+      { source: '/:state/:city/two-way', destination: '/:state/:city/round-trip', permanent: true },
       // Redirect /sitemap.xml → /sitemap_index.xml (Google compatibility fallback)
       {
         source: '/sitemap.xml',

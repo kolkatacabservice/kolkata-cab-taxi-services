@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+// ── Cloudflare Pages compatibility ──────────────────────────────────────────
+export const runtime = 'edge';
+
 /**
  * IndexNow API — Automatically pings Bing, Yandex, and Naver
  * to index your pages immediately after deployment.
@@ -26,7 +29,6 @@ const PRIORITY_URLS = [
   '/services/wedding-car-rental',
   '/services/corporate-car-rental',
   '/services/round-trip',
-  '/services/two-way',
   '/fleet',
   '/tours',
   '/fare-chart',

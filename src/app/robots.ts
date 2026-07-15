@@ -76,13 +76,12 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: [
       'https://www.kolkatacabservice.com/sitemap_index.xml',
       // Also list individual sitemaps for redundancy — if index fails, Google still discovers these
+      // NOTE: Only list sitemaps that actually exist (0–4). sitemap/5.xml and /6.xml do NOT exist.
       'https://www.kolkatacabservice.com/sitemap/0.xml',
       'https://www.kolkatacabservice.com/sitemap/1.xml',
       'https://www.kolkatacabservice.com/sitemap/2.xml',
       'https://www.kolkatacabservice.com/sitemap/3.xml',
       'https://www.kolkatacabservice.com/sitemap/4.xml',
-      'https://www.kolkatacabservice.com/sitemap/5.xml',
-      'https://www.kolkatacabservice.com/sitemap/6.xml',
     ],
   };
 }
