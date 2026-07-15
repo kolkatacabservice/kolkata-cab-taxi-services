@@ -1,46 +1,14 @@
-import 'server-only';
-import fs from 'fs';
-import path from 'path';
+// Direct JSON import — works with both Node.js and Edge runtime.
+// routes.json (4.84MB) is bundled by Turbopack and gzip-compressed for Cloudflare deployment.
+// Turbopack compresses JSON ~80% → ~1MB in the deployed worker.
 import { Route } from './data';
+import routesData from '@/data/routes.json';
 
-// Lazy load routes.json via fs to prevent webpack/turbopack from bundling the 5MB file
-let cachedRoutes: Route[] | null = null;
-let cachedRouteMap: Map<string, Route> | null = null;
-
-function loadRoutesOnce(): { routes: Route[]; routeMap: Map<string, Route> } {
-  if (!cachedRoutes || !cachedRouteMap) {
-    const filePath = path.join(process.cwd(), 'src/data/routes.json');
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    cachedRoutes = JSON.parse(fileContent) as Route[];
-    cachedRouteMap = new Map<string, Route>(cachedRoutes.map(r => [r.slug, r]));
-  }
-  return { routes: cachedRoutes, routeMap: cachedRouteMap };
-}
-
-const routes = new Proxy([] as Route[], {
-  get(_target, prop) {
-    const rList = loadRoutesOnce().routes;
-    const value = Reflect.get(rList, prop, rList);
-    if (typeof value === 'function') {
-      return value.bind(rList);
-    }
-    return value;
-  }
-});
-
-const routeMap = new Proxy(new Map<string, Route>(), {
-  get(_target, prop) {
-    const rMap = loadRoutesOnce().routeMap;
-    const value = Reflect.get(rMap, prop, rMap);
-    if (typeof value === 'function') {
-      return value.bind(rMap);
-    }
-    return value;
-  }
-});
+const allRoutes = routesData as unknown as Route[];
+const routeMap = new Map<string, Route>(allRoutes.map(r => [r.slug, r]));
 
 export function getAllRoutes(): Route[] {
-  return routes;
+  return allRoutes;
 }
 
 export function getRoute(slug: string): Route | undefined {
@@ -48,15 +16,15 @@ export function getRoute(slug: string): Route | undefined {
 }
 
 export function getRoutesFrom(citySlug: string): Route[] {
-  return routes.filter(r => r.from === citySlug);
+  return allRoutes.filter(r => r.from === citySlug);
 }
 
 export function getRoutesTo(citySlug: string): Route[] {
-  return routes.filter(r => r.to === citySlug);
+  return allRoutes.filter(r => r.to === citySlug);
 }
 
 export function getRoutesBetweenStates(fromState: string, toState: string): Route[] {
-  return routes.filter(r => r.fromState === fromState && r.toState === toState);
+  return allRoutes.filter(r => r.fromState === fromState && r.toState === toState);
 }
 
 export function getPopularRoutes(limit: number = 12): Route[] {
@@ -66,32 +34,32 @@ export function getPopularRoutes(limit: number = 12): Route[] {
     'bhubaneswar', 'kolkata', 'jamshedpur', 'mandarmani', 'gangasagar',
     'mayapur', 'siliguri', 'durgapur', 'asansol', 'dhanbad', 'bokaro',
   ];
-  const popular = routes.filter(r => 
+  const popular = allRoutes.filter(r =>
     hubSlugs.includes(r.from) && popularDestinations.includes(r.to)
   );
   return popular.slice(0, limit);
 }
 
 export function getLocalRoutes(citySlug: string, maxDistance: number = 200): Route[] {
-  return routes
+  return allRoutes
     .filter(r => r.from === citySlug && r.distance <= maxDistance)
     .sort((a, b) => a.distance - b.distance);
 }
 
 export function getPopularLocalRoutes(citySlug: string, limit: number = 8): Route[] {
-  const localRoutes = routes
+  const localRoutes = allRoutes
     .filter(r => r.from === citySlug && r.distance <= 250 && r.distance > 0)
     .sort((a, b) => a.distance - b.distance);
   return localRoutes.slice(0, limit);
 }
 
 export function getAllRouteSlugs(): string[] {
-  return routes.map(r => r.slug);
+  return allRoutes.map(r => r.slug);
 }
 
 export function getHighPriorityRoutes(): Route[] {
   const hubSlugs = new Set(['kolkata', 'ranchi', 'bhubaneswar', 'jamshedpur', 'patna']);
-  return routes.filter(r =>
+  return allRoutes.filter(r =>
     r.distance <= 250 ||
     hubSlugs.has(r.from) ||
     hubSlugs.has(r.to)
@@ -107,7 +75,7 @@ export function getLinkedRouteSlugs(): string[] {
   getHighPriorityRoutes().forEach(r => seen.add(r.slug));
 
   const routesByCity = new Map<string, Route[]>();
-  for (const route of routes) {
+  for (const route of allRoutes) {
     const list = routesByCity.get(route.from) ?? [];
     list.push(route);
     routesByCity.set(route.from, list);
@@ -151,24 +119,13 @@ export function getLinkedVehicleRouteSlugs(): string[] {
 }
 
 /**
- * Returns ALL route slugs for fully-static SSG.
- * ALL 13,808 routes (forward + reverse) are pre-built at deploy time — zero ISR.
- * This ensures every route page is instantly crawlable by Googlebot.
- *
- * Build time ~5-8 min, but 100% of pages are statically served — no on-demand delay.
+ * Returns ALL route slugs for SSG (used for sitemap generation at build time).
  */
 export function getStaticRouteSlugs(): string[] {
-  // Return every single route in the database — both forward and reverse
-  // This eliminates ISR for ALL route pages, maximising Google crawlability
-  return routes.map(r => r.slug);
+  return allRoutes.map(r => r.slug);
 }
 
-/**
- * @deprecated Use getStaticRouteSlugs() instead.
- * Returns hub route slugs for vehicle-specific SSG pages.
- * Vehicle pages now redirect to route page #booking-form.
- */
+/** @deprecated Use getStaticRouteSlugs() instead. */
 export function getStaticVehicleRouteSlugs(): string[] {
   return getLinkedVehicleRouteSlugs();
 }
-

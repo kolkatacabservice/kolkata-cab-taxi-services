@@ -2,27 +2,19 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  // ── Static Export for Cloudflare Pages ────────────────────────────────────
-  // output: 'export' produces a pure static `out/` directory.
-  // No Vercel CLI or @cloudflare/next-on-pages needed — just `next build`.
-  // Headers → public/_headers (Cloudflare Pages native)
-  // Redirects → public/_redirects (Cloudflare Pages native)
-  // API routes → functions/ (Cloudflare Pages Functions)
-  output: 'export',
 
-  // Ensure consistent URLs — no trailing slashes
-  trailingSlash: false,
+  // ── Cloudflare Pages via @cloudflare/next-on-pages ────────────────────────
+  // Build command: npx @cloudflare/next-on-pages@1
+  // Output dir:    .vercel/output/static
+  // Route pages (13,808) → edge runtime, dynamically served by CF worker
+  // City/service pages (~700) → pre-rendered static HTML
+  // Keeps file count well under Cloudflare Pages 20,000 file limit
 
-  // experimental flags disabled for CF Pages compatibility
   experimental: {
-    // optimizeCss: true,   // disabled — critters not compatible with static export
-    // inlineCss: true,     // disabled
+    // No experimental flags — keep build clean and predictable
   },
 
   images: {
-    // Static export requires unoptimized images
-    // Cloudflare's global CDN (Polish/Images) handles optimization
-    unoptimized: true,
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [390, 640, 750, 1080, 1920],
     imageSizes: [16, 32, 64, 128, 256],
@@ -30,18 +22,53 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: false,
     contentDispositionType: 'attachment',
   },
+
   compress: true,
   poweredByHeader: false,
 
-  // ── Strip legacy JS polyfills — SWC targets modern browsers only ──
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production'
       ? { exclude: ['error', 'warn'] }
       : false,
   },
 
-  // Headers and Redirects are handled by public/_headers and public/_redirects
-  // Cloudflare Pages natively supports these files — zero server required.
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'X-XSS-Protection', value: '1; mode=block' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(self)' },
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' },
+        ],
+      },
+      {
+        source: '/sitemap/(.*)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=604800, s-maxage=604800' }],
+      },
+      {
+        source: '/robots.txt',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=3600, s-maxage=86400' }],
+      },
+    ];
+  },
+
+  async redirects() {
+    return [
+      { source: '/services/two-way', destination: '/services/round-trip', permanent: true },
+      { source: '/sitemap.xml', destination: '/sitemap_index.xml', permanent: true },
+      { source: '/route/:slug', destination: '/routes/:slug', permanent: true },
+      { source: '/service/:slug', destination: '/services/:slug', permanent: true },
+      { source: '/west-bengal/salt-lake-kolkata', destination: '/kolkata/salt-lake', permanent: true },
+      { source: '/west-bengal/new-town-kolkata', destination: '/kolkata/new-town', permanent: true },
+      { source: '/delhi-ncr/:path*', destination: '/', permanent: true },
+      { source: '/uttarakhand/:path*', destination: '/', permanent: true },
+      { source: '/madhya-pradesh/:path*', destination: '/', permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

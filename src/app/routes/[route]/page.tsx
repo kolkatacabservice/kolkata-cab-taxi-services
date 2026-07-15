@@ -12,19 +12,16 @@ import GoogleMapEmbed from '@/components/GoogleMapEmbed';
 import FareCalculator from '@/components/FareCalculator';
 import VehicleCards from '@/components/VehicleCards';
 import { getCity, getState, BUSINESS } from '@/lib/data';
-import { getRoute, getStaticRouteSlugs, getRoutesFrom, getPopularLocalRoutes } from '@/lib/routeData';
+import { getRoute, getRoutesFrom, getPopularLocalRoutes } from '@/lib/routeData';
 import { generateRouteMetadata, generateFaqSchema, generateBreadcrumbSchema, generateEnhancedRouteSchema, generateSpeakableRouteSchema } from '@/lib/seo';
 import { generateRoutePageContent } from '@/lib/routeContent';
 import { formatBoldText, parseParagraphsWithBold } from '@/lib/textHelper';
 
-// ALL routes pre-built at deploy time — zero ISR, fully static for Cloudflare Pages free plan.
-// dynamicParams=false: unknown routes → 404 (no on-demand generation)
-export const dynamicParams = false;
-export const dynamic = 'force-static';
-export const revalidate = false;
-export async function generateStaticParams() {
-  return getStaticRouteSlugs().map(slug => ({ route: slug }));
-}
+// Edge runtime — dynamically served by Cloudflare Worker on every request.
+// No generateStaticParams → all 13,808 routes served on-demand by CF worker.
+// Keeps CF Pages file count well under 20,000 limit.
+export const runtime = 'edge';
+export const dynamicParams = true;
 
 
 export async function generateMetadata({ params }: { params: Promise<{ route: string }> }): Promise<Metadata> {
