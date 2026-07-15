@@ -1,7 +1,7 @@
 name = "kolkata-cab-taxi"
 compatibility_date = "2025-07-15"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = ".vercel/output/static"
+pages_build_output_dir = "out"
 
 [vars]
 # ── Set these in Cloudflare Pages Dashboard → Settings → Environment Variables ──

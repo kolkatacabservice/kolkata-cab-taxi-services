@@ -1,12 +1,13 @@
-import { redirect } from 'next/navigation';
+// Vehicle-specific route pages removed.
+// With output: 'export', redirect() requires server — use dynamicParams=false instead.
+// Any /routes/xxx/vehicle URL returns 404 (pages were always just redirects, never indexed).
+export const dynamicParams = false;
 
-// Vehicle-specific route pages are removed.
-// All traffic redirects to the main route page's booking form.
-// dynamicParams = true so Next.js calls this function (and redirect fires)
-// instead of returning 404. Redirects do NOT cause ISR cache writes.
-export const dynamicParams = true;
+export async function generateStaticParams() {
+  // Return empty array — no vehicle pages generated in static export
+  return [];
+}
 
-export default async function VehicleRouteRedirect({ params }: { params: Promise<{ route: string }> }) {
-  const { route } = await params;
-  redirect(`/routes/${route}#booking-form`);
+export default function VehicleRouteRedirect() {
+  return null;
 }
