@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { MapPin, Clock, Car, Phone, ChevronRight } from 'lucide-react';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import HeroBanner from '@/components/HeroBanner';
@@ -9,15 +9,15 @@ import { generateToursListingMetadata, generateToursItemListSchema, generateBrea
 
 export const metadata = generateToursListingMetadata();
 
-// Force fully static SSG — zero ISR Reads/Writes on Vercel
+// Force fully static SSG â€” zero ISR Reads/Writes on Cloudflare Pages
 export const dynamic = 'force-static';
 export const revalidate = false;
 
 const categoryIcons: Record<string, string> = {
-  'hill-station': '🏔️',
-  'pilgrimage': '🛕',
-  'wildlife': '🐯',
-  'city-tour': '🏛️',
+  'hill-station': 'ðŸ”ï¸',
+  'pilgrimage': 'ðŸ›•',
+  'wildlife': 'ðŸ¯',
+  'city-tour': 'ðŸ›ï¸',
 };
 
 const categoryColors: Record<string, string> = {
@@ -41,7 +41,7 @@ export default function ToursPage() {
           <Breadcrumbs items={[{ name: 'Tour Packages', href: '/tours' }]} />
           <h1 className="text-3xl md:text-4xl font-extrabold mt-4 mb-4">Tour <span className="text-gradient">Packages</span></h1>
           <p className="text-lg text-gray-300 max-w-3xl">
-            Explore East India with our curated tour packages. Hill stations, pilgrimages, wildlife safaris, and city tours — all with AC cab, experienced driver, and transparent pricing.
+            Explore East India with our curated tour packages. Hill stations, pilgrimages, wildlife safaris, and city tours â€” all with AC cab, experienced driver, and transparent pricing.
           </p>
         </div>
       </section>
@@ -56,7 +56,7 @@ export default function ToursPage() {
                   <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -translate-y-8 translate-x-8" />
                   <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-6 -translate-x-6" />
                   <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border ${categoryColors[tour.category] || 'bg-gray-50 text-gray-700'}`}>
-                    {categoryIcons[tour.category] || '📍'} {tour.category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+                    {categoryIcons[tour.category] || 'ðŸ“'} {tour.category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
                   </span>
                   <h2 className="text-xl font-bold text-white mt-3 group-hover:text-primary transition-colors">{tour.name}</h2>
                   <p className="text-gray-300 text-sm mt-1">{tour.destination}, {tour.state}</p>
@@ -92,7 +92,7 @@ export default function ToursPage() {
                   <div className="flex items-end justify-between pt-4 border-t border-gray-100">
                     <div>
                       <span className="text-xs text-gray-400">Sedan from</span>
-                      <p className="text-2xl font-bold text-primary">₹{tour.pricing.sedan.toLocaleString('en-IN')}</p>
+                      <p className="text-2xl font-bold text-primary">â‚¹{tour.pricing.sedan.toLocaleString('en-IN')}</p>
                     </div>
                     <span className="inline-flex items-center gap-1 text-primary text-sm font-semibold group-hover:gap-2 transition-all">
                       View Details <ChevronRight size={16} />
@@ -117,7 +117,7 @@ export default function ToursPage() {
               <Phone size={22} /> {BUSINESS.phone}
             </a>
             <a href={`${BUSINESS.whatsappLink}?text=${encodeURIComponent('Hi! I want to know about tour packages.')}`} className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white font-bold rounded-full text-lg shadow-lg hover:scale-105 transition-all">
-              💬 WhatsApp
+              ðŸ’¬ WhatsApp
             </a>
           </div>
         </div>

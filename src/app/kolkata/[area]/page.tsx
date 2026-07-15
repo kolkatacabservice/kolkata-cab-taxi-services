@@ -16,7 +16,7 @@ const areas = areasData as Area[];
 
 // Only pre-built Kolkata area pages served; unknown slugs → 404 (no on-demand ISR)
 export const dynamicParams = false;
-// Force fully static SSG — zero ISR Reads/Writes on Vercel
+// Force fully static SSG — zero ISR Reads/Writes on Cloudflare Pages
 export const dynamic = 'force-static';
 export const revalidate = false;
 

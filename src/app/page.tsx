@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import nextDynamic from 'next/dynamic';
@@ -10,7 +10,7 @@ import { BUSINESS, getAllStates, getServices, getVehicles } from '@/lib/data';
 import { getPopularRoutes } from '@/lib/routeData';
 import { generateFaqSchema, generateReviewSchema, generatePopularRoutesItemListSchema, generateHomePageMetadata, generateSeasonalOfferSchema } from '@/lib/seo';
 
-// Dynamic imports for below-fold components — reduces initial JS bundle by ~25 KiB
+// Dynamic imports for below-fold components â€” reduces initial JS bundle by ~25 KiB
 const FareCalculator = nextDynamic(() => import('@/components/FareCalculator'), {
   loading: () => (
     <div className="py-20 text-center">
@@ -32,7 +32,7 @@ const GoogleMapEmbed = nextDynamic(() => import('@/components/GoogleMapEmbed'), 
   ),
 });
 
-// Force fully static SSG — zero ISR Reads/Writes on Vercel
+// Force fully static SSG â€” zero ISR Reads/Writes on Cloudflare Pages
 export const dynamic = 'force-static';
 export const revalidate = false;
 
@@ -60,25 +60,25 @@ export default function HomePage() {
     { question: 'What types of cabs are available in Kolkata?', answer: 'We offer Sedan (Swift Dzire, Honda Amaze), SUV (Ertiga, Innova, Innova Crysta), Tempo Traveller (12-17 seater), and Luxury cars (Fortuner, Mercedes). We also provide decorated cars for weddings.' },
     { question: 'Do you provide one-way taxi service from Kolkata?', answer: 'Yes! We offer one-way taxi service from Kolkata to all major cities. You pay only for the one-way journey with no return charges. This is the most affordable option for point-to-point travel.' },
     { question: 'How can I book a cab in Kolkata?', answer: `You can book a cab by calling ${BUSINESS.phone}, sending a WhatsApp message, or filling out the booking form on our website. We provide instant confirmation and fare details.` },
-    { question: 'Do you provide Kolkata airport cab service?', answer: `Yes! We provide pickup and drop service at Netaji Subhash Chandra Bose International Airport (CCU), Dum Dum. Sedan from ₹1800, SUV from ₹2,200. Our driver tracks your flight and waits with a name board. Call ${BUSINESS.phone}.` },
+    { question: 'Do you provide Kolkata airport cab service?', answer: `Yes! We provide pickup and drop service at Netaji Subhash Chandra Bose International Airport (CCU), Dum Dum. Sedan from â‚¹1800, SUV from â‚¹2,200. Our driver tracks your flight and waits with a name board. Call ${BUSINESS.phone}.` },
     { question: 'Do you provide wedding car rental in Kolkata?', answer: 'Yes, we offer premium wedding car rental services in Kolkata with flower decoration, ribbon decoration, red carpet, and professional chauffeurs. We provide decorated Innova Crysta, Fortuner, and luxury sedans for baraat, vidaai, and wedding functions.' },
     { question: 'What payment methods do you accept?', answer: `We accept Cash, UPI (Google Pay, PhonePe, Paytm), Credit/Debit Cards, and Online Bank Transfers. Payment can be made before or after the trip as per your convenience.` },
     { question: 'Is there a corporate car rental service in Kolkata?', answer: 'Yes, we provide dedicated corporate car rental services in Kolkata for employee transport, client meetings, business events, and executive travel. Monthly contracts and GST invoices are available for corporate clients.' },
-    { question: 'What is the cab fare per km in Kolkata?', answer: 'Cab fare in Kolkata starts at ₹12/km for Sedan (Swift Dzire, Honda Amaze), ₹16/km for SUV (Ertiga, Innova), ₹18/km for Innova Crysta, and ₹22/km for Tempo Traveller. Local packages start from ₹1,800 for 4 hours/40 km. All fares include fuel and driver charges — no hidden costs.' },
+    { question: 'What is the cab fare per km in Kolkata?', answer: 'Cab fare in Kolkata starts at â‚¹12/km for Sedan (Swift Dzire, Honda Amaze), â‚¹16/km for SUV (Ertiga, Innova), â‚¹18/km for Innova Crysta, and â‚¹22/km for Tempo Traveller. Local packages start from â‚¹1,800 for 4 hours/40 km. All fares include fuel and driver charges â€” no hidden costs.' },
   ];
 
   const testimonials = [
     { name: 'Rajesh Kumar', location: 'Kolkata', rating: 5, text: 'Excellent service! Booked a cab from Kolkata to Darjeeling. The driver was professional, car was clean, and the entire trip was very comfortable. Highly recommended!' },
-    { name: 'Priya Sharma', location: 'Salt Lake, Kolkata', rating: 5, text: 'Best cab service in Kolkata! Used their service for airport pickup from CCU. Very punctual — driver was waiting with a name board. Very affordable pricing.' },
-    { name: 'Amit Singh', location: 'Howrah', rating: 5, text: 'Booked a round trip from Kolkata to Puri. Everything was perfect — on time pickup, comfortable Innova, and the driver was like a guide sharing local knowledge.' },
+    { name: 'Priya Sharma', location: 'Salt Lake, Kolkata', rating: 5, text: 'Best cab service in Kolkata! Used their service for airport pickup from CCU. Very punctual â€” driver was waiting with a name board. Very affordable pricing.' },
+    { name: 'Amit Singh', location: 'Howrah', rating: 5, text: 'Booked a round trip from Kolkata to Puri. Everything was perfect â€” on time pickup, comfortable Innova, and the driver was like a guide sharing local knowledge.' },
     { name: 'Sunita Devi', location: 'New Town, Kolkata', rating: 5, text: 'Used their wedding car rental service. The decorated Innova Crysta looked absolutely stunning. Everyone at the wedding was impressed. Thank you Kolkata Cab Service!' },
     { name: 'Mohammed Iqbal', location: 'Park Street, Kolkata', rating: 5, text: 'Traveled from Kolkata to Varanasi. The one-way fare was very reasonable compared to other services. Clean car, experienced driver. Will definitely use again!' },
     { name: 'Ananya Chatterjee', location: 'Ballygunge, Kolkata', rating: 5, text: 'Regular customer for over a year now. I use Kolkata Cab Service for my weekly outstation trips. The rates are fixed, no surge pricing, and the cars are always clean and well-maintained.' },
     { name: 'Vikram Ghosh', location: 'Dum Dum, Kolkata', rating: 4, text: 'Used their airport drop service at 4 AM for an early morning flight from CCU. Driver arrived 15 minutes before time. Sedan was comfortable and fare was exactly as quoted. Good value for money.' },
     { name: 'Sneha Roy', location: 'Gariahat, Kolkata', rating: 5, text: 'Booked a tempo traveller for a family pilgrimage from Kolkata to Gangasagar. The driver knew all the routes, the 12-seater was spacious. We will book again for our Mayapur trip.' },
     { name: 'Deepak Mandal', location: 'Behala, Kolkata', rating: 5, text: 'Corporate cab service for our IT company in Salt Lake. Monthly contract with GST billing. Drivers are always on time and professional. Best B2B cab service in Kolkata.' },
-    { name: 'Ritu Agarwal', location: 'Tollygunge, Kolkata', rating: 4, text: 'Kolkata to Digha weekend trip with family. SUV Ertiga was perfect for 5 people with luggage. Driver was patient at all stops. Very happy with the one-way fare — much cheaper than Uber.' },
-    { name: 'Saurav Das', location: 'Barasat, Kolkata', rating: 5, text: 'I compare prices every time — Kolkata Cab Service consistently beats Ola, Uber, and other local operators on outstation routes. Plus no cancellation drama. Fixed rate, reliable service.' },
+    { name: 'Ritu Agarwal', location: 'Tollygunge, Kolkata', rating: 4, text: 'Kolkata to Digha weekend trip with family. SUV Ertiga was perfect for 5 people with luggage. Driver was patient at all stops. Very happy with the one-way fare â€” much cheaper than Uber.' },
+    { name: 'Saurav Das', location: 'Barasat, Kolkata', rating: 5, text: 'I compare prices every time â€” Kolkata Cab Service consistently beats Ola, Uber, and other local operators on outstation routes. Plus no cancellation drama. Fixed rate, reliable service.' },
     { name: 'Moumita Sen', location: 'Jadavpur, Kolkata', rating: 5, text: 'Hired an Innova Crysta for my sister\'s wedding. Beautiful flower decoration, red carpet setup, and the chauffeur was dressed professionally. Made the wedding entrance memorable!' },
   ];
 
@@ -88,7 +88,7 @@ export default function HomePage() {
     { icon: <CreditCard className="w-8 h-8" />, title: 'No Hidden Charges', desc: 'Transparent pricing with all-inclusive fares. Toll, parking, driver allowance all communicated upfront.' },
     { icon: <Car className="w-8 h-8" />, title: 'Well-Maintained Fleet', desc: 'Clean, sanitized AC vehicles. Regular maintenance and safety checks on all our cars.' },
     { icon: <MapPin className="w-8 h-8" />, title: '80+ Cities Covered', desc: 'Service across 5 states with 500+ routes. Local, outstation, and one-way trips available.' },
-    { icon: <Star className="w-8 h-8" />, title: 'Best Price Guarantee', desc: 'Competitive pricing with no surge. Compare our fares — we guarantee the best rates across Kolkata.' },
+    { icon: <Star className="w-8 h-8" />, title: 'Best Price Guarantee', desc: 'Competitive pricing with no surge. Compare our fares â€” we guarantee the best rates across Kolkata.' },
   ];
 
   const iconMap: Record<string, React.ReactNode> = {
@@ -118,10 +118,10 @@ export default function HomePage() {
   ];
 
   const fareData = [
-    { vehicle: '🚗 Sedan (Swift Dzire / Amaze)', capacity: '4 Passengers', perKm: '₹12/km', local4hr: '₹1,800', local8hr: '₹2,800' },
-    { vehicle: '🚙 SUV (Ertiga / Innova)', capacity: '6 Passengers', perKm: '₹16/km', local4hr: '₹2,500', local8hr: '₹3,800' },
-    { vehicle: '🚐 Innova Crysta', capacity: '7 Passengers', perKm: '₹18/km', local4hr: '₹3,000', local8hr: '₹4,500' },
-    { vehicle: '🚌 Tempo Traveller', capacity: '12 Passengers', perKm: '₹22/km', local4hr: '₹3,500', local8hr: '₹5,500' },
+    { vehicle: 'ðŸš— Sedan (Swift Dzire / Amaze)', capacity: '4 Passengers', perKm: 'â‚¹12/km', local4hr: 'â‚¹1,800', local8hr: 'â‚¹2,800' },
+    { vehicle: 'ðŸš™ SUV (Ertiga / Innova)', capacity: '6 Passengers', perKm: 'â‚¹16/km', local4hr: 'â‚¹2,500', local8hr: 'â‚¹3,800' },
+    { vehicle: 'ðŸš Innova Crysta', capacity: '7 Passengers', perKm: 'â‚¹18/km', local4hr: 'â‚¹3,000', local8hr: 'â‚¹4,500' },
+    { vehicle: 'ðŸšŒ Tempo Traveller', capacity: '12 Passengers', perKm: 'â‚¹22/km', local4hr: 'â‚¹3,500', local8hr: 'â‚¹5,500' },
   ];
 
   return (
@@ -146,15 +146,15 @@ export default function HomePage() {
               <div className="text-white pb-12 sm:pb-16 lg:pb-0">
                 <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-xs sm:text-sm mb-4 sm:mb-6 border border-white/20">
                   <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  ★ 4.8 Google Rating — Serving 80+ Cities Across East India
+                  â˜… 4.8 Google Rating â€” Serving 80+ Cities Across East India
                 </div>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-3 sm:mb-4 drop-shadow-lg">
-                  <span className="text-gradient">Kolkata Cab Service</span> — Best Taxi Booking ₹12/km
+                  <span className="text-gradient">Kolkata Cab Service</span> â€” Best Taxi Booking â‚¹12/km
                   <br />
                   <span className="text-xl sm:text-2xl lg:text-4xl font-bold text-white/90">Local Taxi, Outstation Cab &amp; Airport Transfer in Kolkata | 24/7</span>
                 </h1>
                 <p className="text-sm sm:text-base lg:text-lg text-gray-200 mb-5 sm:mb-8 max-w-lg drop-shadow-md">
-                  Trusted Kolkata cab service for local taxi, outstation cab booking, airport transfer, one-way taxi, car rental &amp; wedding car. AC sedan ₹12/km, SUV ₹16/km. Book cab in Kolkata online or by call — no surge pricing, 24/7.
+                  Trusted Kolkata cab service for local taxi, outstation cab booking, airport transfer, one-way taxi, car rental &amp; wedding car. AC sedan â‚¹12/km, SUV â‚¹16/km. Book cab in Kolkata online or by call â€” no surge pricing, 24/7.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   <a href={`tel:${BUSINESS.phone}`} className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 bg-gradient-to-r from-primary to-amber-500 text-white font-bold rounded-full shadow-lg shadow-primary/40 hover:shadow-primary/60 hover:scale-105 transition-all text-sm sm:text-base">
@@ -167,13 +167,13 @@ export default function HomePage() {
 
                 {/* Trust badges */}
                 <div className="flex flex-wrap gap-3 sm:gap-6 mt-5 sm:mt-8 text-xs sm:text-sm text-white/90">
-                  <span className="flex items-center gap-1.5">✅ Best Cab Service Kolkata</span>
-                  <span className="flex items-center gap-1.5">✅ No Surge Pricing 24/7</span>
-                  <span className="flex items-center gap-1.5">✅ ★4.8 Rated — 5000+ Customers</span>
+                  <span className="flex items-center gap-1.5">âœ… Best Cab Service Kolkata</span>
+                  <span className="flex items-center gap-1.5">âœ… No Surge Pricing 24/7</span>
+                  <span className="flex items-center gap-1.5">âœ… â˜…4.8 Rated â€” 5000+ Customers</span>
                 </div>
               </div>
 
-              {/* Booking Form — Desktop */}
+              {/* Booking Form â€” Desktop */}
               <div className="hidden lg:block animate-slideUp">
                 <BookingForm />
               </div>
@@ -181,12 +181,12 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Mobile CTA — replaces duplicate BookingForm on mobile */}
+        {/* Mobile CTA â€” replaces duplicate BookingForm on mobile */}
         <div className="lg:hidden relative z-20 px-3 sm:px-4 -mt-10 sm:-mt-16 pb-10" id="booking-form">
           <div className="max-w-lg mx-auto bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-5 border border-white/50 relative overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-amber-400 to-primary" />
             <p className="text-secondary font-bold text-lg mb-1 text-center">Book Your Cab Instantly</p>
-            <p className="text-gray-500 text-sm mb-4 text-center">24/7 availability — confirm in under 2 minutes</p>
+            <p className="text-gray-500 text-sm mb-4 text-center">24/7 availability â€” confirm in under 2 minutes</p>
             <div className="flex flex-col gap-3">
               <a
                 href={`tel:${BUSINESS.phone}`}
@@ -198,7 +198,7 @@ export default function HomePage() {
                 href={`${BUSINESS.whatsappLink}?text=${encodeURIComponent('Hi! I want to book a cab in Kolkata.')}`}
                 className="flex items-center justify-center gap-2 w-full py-3.5 bg-green-600 text-white font-bold rounded-xl shadow-lg text-base"
               >
-                💬 WhatsApp Us — Quick Booking
+                ðŸ’¬ WhatsApp Us â€” Quick Booking
               </a>
               
               <div className="relative my-4">
@@ -224,7 +224,7 @@ export default function HomePage() {
               { icon: <Users className="w-8 h-8" />, value: '5,000+', label: 'Happy Customers' },
               { icon: <Route className="w-8 h-8" />, value: '500+', label: 'Routes Covered' },
               { icon: <MapPin className="w-8 h-8" />, value: '80+', label: 'Cities Served' },
-              { icon: <Award className="w-8 h-8" />, value: '4.8★', label: 'Average Rating' },
+              { icon: <Award className="w-8 h-8" />, value: '4.8â˜…', label: 'Average Rating' },
             ].map((stat, i) => (
               <div key={i} className="flex flex-col items-center gap-2">
                 <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-primary">
@@ -243,7 +243,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary mb-3">Our <span className="text-gradient">Services</span></h2>
-            <p className="text-gray-500 max-w-2xl mx-auto text-sm md:text-base">From local rides to long-distance trips, weddings to corporate travel — we offer every type of cab & car rental service across East India.</p>
+            <p className="text-gray-500 max-w-2xl mx-auto text-sm md:text-base">From local rides to long-distance trips, weddings to corporate travel â€” we offer every type of cab & car rental service across East India.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service) => (
@@ -267,7 +267,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary mb-3">Cab Service Areas in <span className="text-gradient">Kolkata</span></h2>
-            <p className="text-gray-500 max-w-2xl mx-auto">We pick up and drop from every corner of Kolkata — from Dum Dum to Tollygunge, Salt Lake to Howrah.</p>
+            <p className="text-gray-500 max-w-2xl mx-auto">We pick up and drop from every corner of Kolkata â€” from Dum Dum to Tollygunge, Salt Lake to Howrah.</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {kolkataAreas.map((area) => (
@@ -293,7 +293,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary mb-3">Kolkata Cab <span className="text-gradient">Fare Chart</span></h2>
-            <p className="text-gray-500">Transparent pricing — no hidden charges, no surge pricing</p>
+            <p className="text-gray-500">Transparent pricing â€” no hidden charges, no surge pricing</p>
           </div>
           <div className="overflow-x-auto rounded-2xl shadow-sm border border-gray-100">
             <table className="w-full border-collapse bg-white">
@@ -364,8 +364,8 @@ export default function HomePage() {
                   <Route size={20} className="text-primary" />
                 </div>
                 <div className="min-w-0">
-                  <p className="font-semibold text-secondary text-sm truncate">{route.fromName} → {route.toName}</p>
-                  <p className="text-xs text-gray-500">{route.distance} km • From ₹{route.priceSaloon}</p>
+                  <p className="font-semibold text-secondary text-sm truncate">{route.fromName} â†’ {route.toName}</p>
+                  <p className="text-xs text-gray-500">{route.distance} km â€¢ From â‚¹{route.priceSaloon}</p>
                 </div>
                 <ChevronRight size={16} className="text-gray-300 shrink-0 ml-auto" />
               </Link>
@@ -402,14 +402,14 @@ export default function HomePage() {
                   <h3 className="text-xl font-bold text-secondary mb-1">{vehicle.name}</h3>
                   <p className="text-gray-500 text-sm mb-3">{vehicle.models.join(', ')}</p>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full">👥 {vehicle.capacity} Passengers</span>
-                    <span className="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full">🧳 {vehicle.luggage} Bags</span>
-                    <span className="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full">❄️ AC</span>
+                    <span className="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full">ðŸ‘¥ {vehicle.capacity} Passengers</span>
+                    <span className="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full">ðŸ§³ {vehicle.luggage} Bags</span>
+                    <span className="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full">â„ï¸ AC</span>
                   </div>
                   <div className="flex items-end justify-between">
                     <div>
                       <span className="text-xs text-gray-500">Starting from</span>
-                      <p className="text-2xl font-bold text-primary">₹{vehicle.pricePerKm}<span className="text-sm text-gray-500 font-normal">/km</span></p>
+                      <p className="text-2xl font-bold text-primary">â‚¹{vehicle.pricePerKm}<span className="text-sm text-gray-500 font-normal">/km</span></p>
                     </div>
                     <a href={`tel:${BUSINESS.phone}`} className="px-4 py-2 bg-primary text-white rounded-lg font-semibold text-sm hover:bg-primary/90 transition-colors">
                       Book Now
@@ -432,7 +432,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary mb-3">Why Choose <span className="text-gradient">Us</span></h2>
-            <p className="text-gray-500">Trusted by 5,000+ travelers across East India — here is why Kolkata Cab Service is the best choice</p>
+            <p className="text-gray-500">Trusted by 5,000+ travelers across East India â€” here is why Kolkata Cab Service is the best choice</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {whyChooseUs.map((item, i) => (
@@ -455,7 +455,7 @@ export default function HomePage() {
                 'Serving Kolkata since 2020 with 5,000+ completed trips',
                 'Instant booking confirmation via WhatsApp within 2 minutes',
                 'Available across all Kolkata areas: Salt Lake, New Town, Howrah, Park Street, Dum Dum, Ballygunge, and more',
-                'One-way, round trip, local hourly, outstation — all service types available',
+                'One-way, round trip, local hourly, outstation â€” all service types available',
                 'GST invoice provided for all corporate bookings',
               ].map((point, i) => (
                 <div key={i} className="flex items-start gap-2">
@@ -473,7 +473,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary mb-3">Service <span className="text-gradient">Coverage</span></h2>
-            <p className="text-gray-500">We operate across 5 states with 80+ cities — Kolkata, West Bengal & East India</p>
+            <p className="text-gray-500">We operate across 5 states with 80+ cities â€” Kolkata, West Bengal & East India</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {states.map((state) => (
@@ -532,13 +532,13 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white text-secondary font-semibold rounded-full text-sm hover:bg-gray-100 transition-colors shadow-lg"
             >
-              ⭐ Rate Us on Google
+              â­ Rate Us on Google
             </a>
           </div>
         </div>
       </section>
 
-      {/* Why Better Than Uber/Ola — E-E-A-T Comparison */}
+      {/* Why Better Than Uber/Ola â€” E-E-A-T Comparison */}
       <section className="py-10 lg:py-20 bg-white" id="vs-comparison">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
@@ -556,14 +556,14 @@ export default function HomePage() {
               </thead>
               <tbody>
                 {[
-                  { feature: 'Surge Pricing', us: '❌ Never — Fixed rates 24/7', them: '✅ Yes — 2-3x during rain/festivals' },
-                  { feature: 'Outstation Trips', us: '✅ 500+ routes, one-way available', them: '❌ Limited availability' },
-                  { feature: 'Airport Pickup (CCU)', us: '✅ ₹1800 flat, flight tracking', them: '✅ Variable pricing' },
-                  { feature: 'Cancellation Drama', us: '❌ Zero cancellations', them: '✅ Frequent driver cancellations' },
-                  { feature: 'Wedding Car Rental', us: '✅ Decorated cars, red carpet', them: '❌ Not available' },
-                  { feature: 'Corporate Billing (GST)', us: '✅ Monthly contracts, GST invoice', them: '❌ Limited support' },
-                  { feature: 'WhatsApp Booking', us: '✅ Instant confirmation in 2 min', them: '❌ App-only booking' },
-                  { feature: 'Driver Quality', us: '✅ Police-verified, 5+ yrs exp', them: '⚠️ Varies significantly' },
+                  { feature: 'Surge Pricing', us: 'âŒ Never â€” Fixed rates 24/7', them: 'âœ… Yes â€” 2-3x during rain/festivals' },
+                  { feature: 'Outstation Trips', us: 'âœ… 500+ routes, one-way available', them: 'âŒ Limited availability' },
+                  { feature: 'Airport Pickup (CCU)', us: 'âœ… â‚¹1800 flat, flight tracking', them: 'âœ… Variable pricing' },
+                  { feature: 'Cancellation Drama', us: 'âŒ Zero cancellations', them: 'âœ… Frequent driver cancellations' },
+                  { feature: 'Wedding Car Rental', us: 'âœ… Decorated cars, red carpet', them: 'âŒ Not available' },
+                  { feature: 'Corporate Billing (GST)', us: 'âœ… Monthly contracts, GST invoice', them: 'âŒ Limited support' },
+                  { feature: 'WhatsApp Booking', us: 'âœ… Instant confirmation in 2 min', them: 'âŒ App-only booking' },
+                  { feature: 'Driver Quality', us: 'âœ… Police-verified, 5+ yrs exp', them: 'âš ï¸ Varies significantly' },
                 ].map((row, i) => (
                   <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                     <td className="px-5 py-3.5 font-semibold text-secondary text-sm">{row.feature}</td>
@@ -583,9 +583,9 @@ export default function HomePage() {
       {/* Instant Fare Calculator */}
       <FareCalculator />
 
-      {/* Google Maps — Our Location */}
+      {/* Google Maps â€” Our Location */}
       <GoogleMapEmbed
-        title="Our Service Area — Kolkata & East India"
+        title="Our Service Area â€” Kolkata & East India"
         subtitle="Kolkata Cab Service covers 80+ cities across West Bengal, Jharkhand, Odisha, Bihar & Uttar Pradesh. View our headquarters and service coverage."
       />
 
@@ -593,13 +593,13 @@ export default function HomePage() {
       <section className="py-16 lg:py-20 bg-gradient-to-r from-primary to-amber-500" id="cta">
         <div className="max-w-4xl mx-auto px-4 text-center text-white">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Book Your Kolkata Cab Now!</h2>
-          <p className="text-lg text-white/90 mb-8">Call us or WhatsApp for instant booking confirmation. 24/7 available — no waiting!</p>
+          <p className="text-lg text-white/90 mb-8">Call us or WhatsApp for instant booking confirmation. 24/7 available â€” no waiting!</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href={`tel:${BUSINESS.phone}`} className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-primary font-bold rounded-full text-lg shadow-lg hover:scale-105 transition-all">
               <Phone size={22} /> {BUSINESS.phone}
             </a>
             <a href={`${BUSINESS.whatsappLink}?text=${encodeURIComponent('Hi! I want to book a cab in Kolkata.')}`} className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-700 text-white font-bold rounded-full text-lg shadow-lg hover:scale-105 transition-all">
-              💬 WhatsApp Us
+              ðŸ’¬ WhatsApp Us
             </a>
           </div>
           {/* GMB Integration */}
@@ -610,7 +610,7 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm text-white font-semibold rounded-full text-sm border border-white/30 hover:bg-white/30 transition-all"
             >
-              📍 Find Us on Google Maps
+              ðŸ“ Find Us on Google Maps
             </a>
             <a
               href="https://g.page/r/CQpn2lOt9Y8QEBM/review"
@@ -618,32 +618,32 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm text-white font-semibold rounded-full text-sm border border-white/30 hover:bg-white/30 transition-all"
             >
-              ⭐ Write a Google Review
+              â­ Write a Google Review
             </a>
           </div>
         </div>
       </section>
 
-      {/* About Kolkata Cab Service — Helpful, User-Focused Content */}
+      {/* About Kolkata Cab Service â€” Helpful, User-Focused Content */}
       <section className="py-10 lg:py-20 bg-gray-50" id="about-kolkata-cab">
         <div className="max-w-7xl mx-auto px-4">
           <div className="max-w-4xl">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary mb-6">About <span className="text-gradient">Kolkata Cab Service</span></h2>
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>
-                Since {BUSINESS.foundYear}, we have been helping travellers across Kolkata, West Bengal, Jharkhand, Odisha, Bihar, and Uttar Pradesh get from point A to point B safely and affordably. Whether you need a ride to the airport, a car for your family vacation, or daily transport for your business — we handle it all with clean AC vehicles and experienced drivers.
+                Since {BUSINESS.foundYear}, we have been helping travellers across Kolkata, West Bengal, Jharkhand, Odisha, Bihar, and Uttar Pradesh get from point A to point B safely and affordably. Whether you need a ride to the airport, a car for your family vacation, or daily transport for your business â€” we handle it all with clean AC vehicles and experienced drivers.
               </p>
               <p>
-                Our outstation rates start at ₹12 per km for a sedan (Swift Dzire or Honda Amaze) and ₹16 per km for an SUV like the Ertiga or Innova. For larger groups, we offer Tempo Travellers at ₹22 per km. Every fare includes fuel, driver charges, and air conditioning — the only extras are toll and parking, which we communicate before you confirm your booking.
+                Our outstation rates start at â‚¹12 per km for a sedan (Swift Dzire or Honda Amaze) and â‚¹16 per km for an SUV like the Ertiga or Innova. For larger groups, we offer Tempo Travellers at â‚¹22 per km. Every fare includes fuel, driver charges, and air conditioning â€” the only extras are toll and parking, which we communicate before you confirm your booking.
               </p>
               <p>
-                What sets us apart from app-based ride services is consistency. Our rates stay the same whether it&apos;s a rainy evening, a Durga Puja night, or a regular Tuesday morning. There&apos;s no surge pricing, no dynamic fare multiplier — just a fixed, transparent rate that you agree to before you ride. That predictability is why over 5,000 customers trust us with their travel plans.
+                What sets us apart from app-based ride services is consistency. Our rates stay the same whether it&apos;s a rainy evening, a Durga Puja night, or a regular Tuesday morning. There&apos;s no surge pricing, no dynamic fare multiplier â€” just a fixed, transparent rate that you agree to before you ride. That predictability is why over 5,000 customers trust us with their travel plans.
               </p>
               <p>
                 We operate across all areas of Kolkata including Salt Lake, New Town, Howrah, Park Street, Dum Dum, Ballygunge, and Behala. Beyond Kolkata, our hubs in Ranchi, Bhubaneswar, Patna, and Varanasi cover Jharkhand, Odisha, Bihar, and Uttar Pradesh completely. With 500+ routes connecting 80+ cities, you can book any intercity journey through a single phone call.
               </p>
               <p>
-                Every driver in our fleet is police-verified with a minimum of five years of professional driving experience. All vehicles are GPS-tracked so you can share your live location with family. We&apos;re available round the clock — whether you need an early morning airport pickup at 3 AM or a late-night ride home after a function.
+                Every driver in our fleet is police-verified with a minimum of five years of professional driving experience. All vehicles are GPS-tracked so you can share your live location with family. We&apos;re available round the clock â€” whether you need an early morning airport pickup at 3 AM or a late-night ride home after a function.
               </p>
               <p>
                 Booking takes under two minutes. Call us at <a href={`tel:${BUSINESS.phone}`} className="text-primary font-semibold hover:underline">{BUSINESS.phone}</a>, send a WhatsApp message, or fill out the booking form above. You&apos;ll get instant confirmation with your driver&apos;s name, phone number, and vehicle details. No app download needed.
@@ -652,13 +652,13 @@ export default function HomePage() {
 
             {/* Airport Transfer Quick Guide */}
             <div className="mt-10 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
-              <h3 className="text-xl font-bold text-secondary mb-4">Kolkata Airport Transfers — Fixed Rates, No Surge</h3>
+              <h3 className="text-xl font-bold text-secondary mb-4">Kolkata Airport Transfers â€” Fixed Rates, No Surge</h3>
               <div className="space-y-3 text-gray-600 text-sm leading-relaxed">
                 <p>
-                  Netaji Subhash Chandra Bose International Airport (CCU) in Dum Dum is a 30-45 minute drive from most parts of the city. Our airport transfer service includes real-time flight tracking — your driver will be waiting at the arrival gate with a name board, even if your flight is delayed.
+                  Netaji Subhash Chandra Bose International Airport (CCU) in Dum Dum is a 30-45 minute drive from most parts of the city. Our airport transfer service includes real-time flight tracking â€” your driver will be waiting at the arrival gate with a name board, even if your flight is delayed.
                 </p>
                 <p>
-                  <strong>Sample fares:</strong> Airport to Salt Lake — ₹1,200 (Sedan), Airport to Howrah — ₹800 (Sedan), Airport to Park Street — ₹700 (Sedan). SUV rates are approximately 40% higher. These are fixed prices with no surge pricing, even during peak travel hours or festivals.
+                  <strong>Sample fares:</strong> Airport to Salt Lake â€” â‚¹1,200 (Sedan), Airport to Howrah â€” â‚¹800 (Sedan), Airport to Park Street â€” â‚¹700 (Sedan). SUV rates are approximately 40% higher. These are fixed prices with no surge pricing, even during peak travel hours or festivals.
                 </p>
               </div>
             </div>
@@ -676,7 +676,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* NAP — Name, Address, Phone for local SEO consistency */}
+            {/* NAP â€” Name, Address, Phone for local SEO consistency */}
             <address className="mt-8 p-6 bg-accent rounded-2xl not-italic">
               <h3 className="text-lg font-bold text-secondary mb-3">Contact Kolkata Cab Service</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
@@ -697,42 +697,42 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Seasonal / Festival Cab Service — targets high-volume seasonal keywords */}
+      {/* Seasonal / Festival Cab Service â€” targets high-volume seasonal keywords */}
       <section className="py-16 lg:py-20 bg-white" id="seasonal-offers">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-3">Festival & Seasonal <span className="text-gradient">Cab Service</span></h2>
-            <p className="text-gray-500 max-w-2xl mx-auto">Need a cab during Durga Puja, Diwali, Christmas, or summer holidays? We operate at fixed rates with no surge pricing — even during peak festival demand.</p>
+            <p className="text-gray-500 max-w-2xl mx-auto">Need a cab during Durga Puja, Diwali, Christmas, or summer holidays? We operate at fixed rates with no surge pricing â€” even during peak festival demand.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
-                emoji: '🪔',
+                emoji: 'ðŸª”',
                 title: 'Durga Puja Cab',
                 desc: 'Pandal hopping, airport transfers, outstation travel during Durga Puja. Dedicated cabs for all 5 days.',
                 tags: ['Pandal Hopping', 'Airport', 'Outstation'],
-                period: 'Sep – Oct',
+                period: 'Sep â€“ Oct',
               },
               {
-                emoji: '🎆',
+                emoji: 'ðŸŽ†',
                 title: 'Diwali & Kali Puja Cab',
                 desc: 'Safe late-night cab rides during Diwali and Kali Puja celebrations. Family travel, party drops.',
                 tags: ['Night Rides', 'Family Travel', 'Safe'],
-                period: 'Oct – Nov',
+                period: 'Oct â€“ Nov',
               },
               {
-                emoji: '🎄',
+                emoji: 'ðŸŽ„',
                 title: 'Christmas & New Year Cab',
                 desc: 'Airport transfers, party transportation, outstation trips during Christmas and New Year season.',
                 tags: ['Party Drops', 'Airport', 'Trips'],
-                period: 'Dec – Jan',
+                period: 'Dec â€“ Jan',
               },
               {
-                emoji: '☀️',
+                emoji: 'â˜€ï¸',
                 title: 'Summer Holiday Cab',
                 desc: 'Special packages to Darjeeling, Puri, Digha, Sundarbans with AC cab. Beat the heat with hill station trips.',
                 tags: ['Darjeeling', 'Puri', 'Digha'],
-                period: 'Apr – Jun',
+                period: 'Apr â€“ Jun',
               },
             ].map((offer, i) => (
               <div key={i} className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
@@ -744,18 +744,18 @@ export default function HomePage() {
                     <span key={tag} className="px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full font-medium">{tag}</span>
                   ))}
                 </div>
-                <p className="text-xs text-gray-500">📅 {offer.period}</p>
+                <p className="text-xs text-gray-500">ðŸ“… {offer.period}</p>
               </div>
             ))}
           </div>
           <div className="mt-8 p-6 bg-accent rounded-2xl text-center">
-            <p className="text-secondary font-semibold mb-2">🎉 No Surge Pricing During Festivals — Guaranteed!</p>
+            <p className="text-secondary font-semibold mb-2">ðŸŽ‰ No Surge Pricing During Festivals â€” Guaranteed!</p>
             <p className="text-gray-600 text-sm">Unlike Ola and Uber, {BUSINESS.name} charges the same fixed rates during Durga Puja, Diwali, Christmas, and all other festivals. Call <a href={`tel:${BUSINESS.phone}`} className="text-amber-900 font-bold hover:underline">{BUSINESS.phone}</a> to book.</p>
           </div>
         </div>
       </section>
 
-      {/* Popular Searches — SEO Internal Links */}
+      {/* Popular Searches â€” SEO Internal Links */}
       <section className="py-12 bg-white" id="popular-searches">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-secondary mb-6">Popular Searches</h2>
@@ -821,7 +821,7 @@ export default function HomePage() {
                 <Link href="/tours" className="block text-sm text-gray-600 hover:text-primary transition-colors py-1">Tour Packages</Link>
                 <Link href="/contact" className="block text-sm text-gray-600 hover:text-primary transition-colors py-1">Contact Us</Link>
                 <Link href="/about" className="block text-sm text-gray-600 hover:text-primary transition-colors py-1">About Us</Link>
-                <Link href="/kolkata-cab-vs-ola-uber" className="block text-sm text-primary font-semibold hover:text-primary/80 transition-colors py-1">🆚 vs Ola / Uber</Link>
+                <Link href="/kolkata-cab-vs-ola-uber" className="block text-sm text-primary font-semibold hover:text-primary/80 transition-colors py-1">ðŸ†š vs Ola / Uber</Link>
               </div>
               <h3 className="text-sm font-bold text-secondary mt-4 mb-3">Kolkata Areas</h3>
               <div className="space-y-0.5">
@@ -850,7 +850,7 @@ export default function HomePage() {
       {/* FAQ */}
       <section className="py-16 lg:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
-          <FAQSection faqs={faqs} title="Frequently Asked Questions — Kolkata Cab Service" />
+          <FAQSection faqs={faqs} title="Frequently Asked Questions â€” Kolkata Cab Service" />
         </div>
       </section>
     </>

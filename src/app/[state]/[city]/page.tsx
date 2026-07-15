@@ -19,7 +19,7 @@ import { formatBoldText } from '@/lib/textHelper';
 
 // Only pre-built city pages served; unknown state/city combos → 404 (no on-demand ISR)
 export const dynamicParams = false;
-// Force fully static SSG — zero ISR Reads/Writes on Vercel
+// Force fully static SSG — zero ISR Reads/Writes on Cloudflare Pages
 export const dynamic = 'force-static';
 export const revalidate = false;
 

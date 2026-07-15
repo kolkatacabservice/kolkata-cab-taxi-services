@@ -14,7 +14,7 @@ import { formatBoldText } from '@/lib/textHelper';
 
 // Only pre-built pages served; unknown state/city → 404 (no on-demand ISR)
 export const dynamicParams = false;
-// Force fully static SSG — zero ISR Reads/Writes on Vercel
+// Force fully static SSG — zero ISR Reads/Writes on Cloudflare Pages
 export const dynamic = 'force-static';
 export const revalidate = false;
 export async function generateStaticParams() { return getAllCities().map(c => ({ state: c.state, city: c.slug })); }

@@ -13,7 +13,7 @@ import { generateStateMetadata, generateFaqSchema, generateBreadcrumbSchema } fr
 
 // Only pre-built state pages served; unknown state slugs → 404 (no on-demand ISR)
 export const dynamicParams = false;
-// Force fully static SSG — zero ISR Reads/Writes on Vercel
+// Force fully static SSG — zero ISR Reads/Writes on Cloudflare Pages
 export const dynamic = 'force-static';
 export const revalidate = false;
 

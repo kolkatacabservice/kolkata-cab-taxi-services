@@ -3,12 +3,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactCompiler: true,
 
-  // ── Cloudflare Pages via @cloudflare/next-on-pages ────────────────────────
-  // Build command: npx @cloudflare/next-on-pages@1
-  // Output dir:    .vercel/output/static
-  // Route pages (13,808) → edge runtime, dynamically served by CF worker
-  // City/service pages (~700) → pre-rendered static HTML
-  // Keeps file count well under Cloudflare Pages 20,000 file limit
+  // ── Cloudflare Workers via @opennextjs/cloudflare ────────────────────────
+  // Build command: npm run build:cf  (opennextjs-cloudflare build)
+  // Output dir:    .open-next/
+  // worker.js  → Cloudflare Worker (handles SSR, API routes, proxy)
+  // assets/    → Static files served via Workers Static Assets
 
   experimental: {
     // No experimental flags — keep build clean and predictable
@@ -43,6 +42,9 @@ const nextConfig: NextConfig = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(self)' },
           { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' },
+          // SEO headers — moved from proxy.ts since Node.js Proxy can't set these via @opennextjs/cloudflare
+          { key: 'Content-Language', value: 'en-IN' },
+          { key: 'X-Robots-Tag', value: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
         ],
       },
       {

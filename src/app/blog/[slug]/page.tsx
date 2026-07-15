@@ -23,7 +23,7 @@ const blogs = blogsData as Blog[];
 
 // Only pre-built blog pages served
 export const dynamicParams = false;
-// Force fully static SSG — zero ISR Reads/Writes on Vercel
+// Force fully static SSG — zero ISR Reads/Writes on Cloudflare Pages
 export const dynamic = 'force-static';
 export const revalidate = false;
 
