@@ -6,9 +6,12 @@ const nextConfig: NextConfig = {
   trailingSlash: false,
 
   // ── Performance: inline critical CSS to eliminate render-blocking chunk ──
+  // NOTE: optimizeCss (critters) and inlineCss are disabled for Cloudflare Pages
+  // compatibility — @cloudflare/next-on-pages doesn't support these experimental flags.
+  // Cloudflare's global CDN + HTTP/2 push handles performance at the edge level.
   experimental: {
-    optimizeCss: true,   // critters-based critical CSS extraction
-    inlineCss: true,     // inlines above-the-fold CSS into <style> — removes the blocking <link>
+    // optimizeCss: true,   // disabled for CF Pages compatibility
+    // inlineCss: true,     // disabled for CF Pages compatibility
   },
 
   images: {

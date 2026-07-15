@@ -1,9 +1,11 @@
 name = "kolkata-cab-taxi"
-compatibility_date = "2024-09-23"
+compatibility_date = "2025-07-15"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
 
 [vars]
-# Add environment variables here or set them in Cloudflare Pages dashboard
-# GOOGLE_SCRIPT_URL = ""
+# ── Set these in Cloudflare Pages Dashboard → Settings → Environment Variables ──
+# GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
+# NEXT_PUBLIC_GA_ID = "G-XXXXXXXXXX"
 # INDEXNOW_API_KEY = "f63a562479e04845a7090b84784a9e52"
+# REINDEX_API_KEY  = "f63a562479e04845a7090b84784a9e52"
